@@ -70,6 +70,60 @@
     <Compile Include="Controls\VideoMonitorPanel.cs" />
     <Compile Include="Controls\HistoryTarePanel.cs" />
     <Compile Include="Controls\QuickDataBrowsePanel.cs" />
+    <Compile Include="Forms\frmTruckEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmTruckEdit.Designer.cs">
+      <DependentUpon>frmTruckEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmProductEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmProductEdit.Designer.cs">
+      <DependentUpon>frmProductEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmCustomerEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmCustomerEdit.Designer.cs">
+      <DependentUpon>frmCustomerEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmUserManage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmUserManage.Designer.cs">
+      <DependentUpon>frmUserManage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmRoleManage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmRoleManage.Designer.cs">
+      <DependentUpon>frmRoleManage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmPasswordChange.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmPasswordChange.Designer.cs">
+      <DependentUpon>frmPasswordChange.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmDatabaseConfig.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmDatabaseConfig.Designer.cs">
+      <DependentUpon>frmDatabaseConfig.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmScaleConfig.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmScaleConfig.Designer.cs">
+      <DependentUpon>frmScaleConfig.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmAbout.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmAbout.Designer.cs">
+      <DependentUpon>frmAbout.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
