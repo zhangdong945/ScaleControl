@@ -193,6 +193,27 @@ namespace ScaleControl.UI.Controls
             return true;
         }
 
+        public void ClearFields()
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Action(ClearFields));
+                return;
+            }
+            txtTruckNumber.Text = "";
+            txtCargo.Text = "";
+            txtSender.Text = "";
+            txtReceiver.Text = "";
+            txtSpec.Text = "";
+            txtDriver.Text = "";
+            txtBusinessNo.Text = "";
+            cmbCargoType.SelectedIndex = -1;
+            txtGrossWeight.Text = "";
+            txtTareWeight.Text = "";
+            txtNetWeight.Text = "";
+            errorProvider.Clear();
+        }
+
         public Dictionary<string, string> GetFieldValues()
         {
             return new Dictionary<string, string>

@@ -214,6 +214,7 @@ namespace ScaleControl.UI
         private void BtnContinue_Click(object sender, EventArgs e)
         {
             _workflow.Continue();
+            _dataInputPanel.ClearFields();
             statusLabel.Text = "已继续 - 准备新一次称重";
         }
 
@@ -302,17 +303,29 @@ namespace ScaleControl.UI
 
         private void ScaleDriver_WeightUpdated(object sender, WeightData e)
         {
-            if (e != null)
+            if (e == null) return;
+
+            if (this.InvokeRequired)
             {
-                _weightDisplayPanel.SetWeight((double)e.Weight);
-                _weightDisplayPanel.SetStable(e.IsStable);
-                _weightDisplayPanel.SetConnected(true);
+                this.Invoke(new Action(() => ScaleDriver_WeightUpdated(sender, e)));
+                return;
             }
+
+            _weightDisplayPanel.SetWeight((double)e.Weight);
+            _weightDisplayPanel.SetStable(e.IsStable);
+            _weightDisplayPanel.SetConnected(true);
         }
 
         private void ScaleDriver_ConnectionStatusChanged(object sender, string e)
         {
             bool connected = e == "Connected" || e == "已连接";
+
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Action(() => ScaleDriver_ConnectionStatusChanged(sender, e)));
+                return;
+            }
+
             _weightDisplayPanel.SetConnected(connected);
             statusLabel.Text = connected
                 ? "秤已连接"
