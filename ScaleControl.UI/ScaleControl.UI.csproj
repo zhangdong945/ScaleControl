@@ -124,6 +124,18 @@
     <Compile Include="Forms\frmAbout.Designer.cs">
       <DependentUpon>frmAbout.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\frmWeighingQuery.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmWeighingQuery.Designer.cs">
+      <DependentUpon>frmWeighingQuery.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmDetailRecord.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmDetailRecord.Designer.cs">
+      <DependentUpon>frmDetailRecord.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
