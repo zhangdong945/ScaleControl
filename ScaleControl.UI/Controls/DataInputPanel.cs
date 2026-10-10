@@ -27,6 +27,12 @@ namespace ScaleControl.UI.Controls
             InitializeComponent();
         }
 
+        public event EventHandler TruckNumberChanged;
+
+        public int? GrossWeight => string.IsNullOrEmpty(txtGrossWeight.Text) ? (int?)null : (int?)double.Parse(txtGrossWeight.Text);
+        public int? TareWeight => string.IsNullOrEmpty(txtTareWeight.Text) ? (int?)null : (int?)double.Parse(txtTareWeight.Text);
+        public int? NetWeightValue => string.IsNullOrEmpty(txtNetWeight.Text) ? (int?)null : (int?)double.Parse(txtNetWeight.Text);
+
         private void InitializeComponent()
         {
             this.Dock = DockStyle.Fill;
@@ -51,6 +57,7 @@ namespace ScaleControl.UI.Controls
 
             // Row 0: 车号, 货物
             txtTruckNumber = AddFieldRow(layout, 0, 0, "车号", true);
+            txtTruckNumber.Leave += (s, e) => TruckNumberChanged?.Invoke(this, EventArgs.Empty);
             txtCargo = AddFieldRow(layout, 0, 2, "货物", false);
 
             // Row 1: 发货单位, 收货单位
