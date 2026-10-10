@@ -47,10 +47,21 @@ namespace ScaleControl.UI.Forms
             {
                 var criteria = new LogQueryCriteria
                 {
-                    StartTime = DateTime.Today.AddDays(-30),
-                    EndTime = DateTime.Now
+                    StartTime = _record.FirstDateTime ?? DateTime.Today.AddDays(-30),
+                    EndTime = _record.SecondDateTime ?? DateTime.Now
                 };
                 _logs = _repository.QueryLogs(criteria);
+                // Filter by current record's ticket number (KeyValue match)
+                if (_logs.Count > 0 && (!string.IsNullOrEmpty(_record.TicketNo1) || !string.IsNullOrEmpty(_record.TicketNo2)))
+                {
+                    _logs.RemoveAll(l =>
+                    {
+                        if (string.IsNullOrEmpty(l.KeyValue)) return true;
+                        if (!string.IsNullOrEmpty(_record.TicketNo1) && l.KeyValue == _record.TicketNo1) return false;
+                        if (!string.IsNullOrEmpty(_record.TicketNo2) && l.KeyValue == _record.TicketNo2) return false;
+                        return true;
+                    });
+                }
                 dgvLogs.DataSource = null;
                 dgvLogs.DataSource = _logs;
             }

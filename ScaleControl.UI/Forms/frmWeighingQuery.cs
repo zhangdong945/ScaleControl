@@ -187,7 +187,17 @@ namespace ScaleControl.UI.Forms
                             writer.WriteLine("磅单号,车号,货物,发货单位,收货单位,毛重,皮重,净重,称重时间,数据状态");
                             foreach (var r in _results)
                             {
-                                writer.WriteLine($"{r.TicketNo2},{r.TruckNo},{r.Product},{r.Sender},{r.Receiver},{r.Gross},{r.Tare},{r.Net},{r.SecondDateTime},{r.DataStatus}");
+                                writer.WriteLine(
+                                    $"{EscapeCsv(r.TicketNo2)}," +
+                                    $"{EscapeCsv(r.TruckNo)}," +
+                                    $"{EscapeCsv(r.Product)}," +
+                                    $"{EscapeCsv(r.Sender)}," +
+                                    $"{EscapeCsv(r.Receiver)}," +
+                                    $"{r.Gross}," +
+                                    $"{r.Tare}," +
+                                    $"{r.Net}," +
+                                    $"{EscapeCsv(r.SecondDateTime?.ToString("yyyy-MM-dd HH:mm:ss"))}," +
+                                    $"{EscapeCsv(r.DataStatus)}");
                             }
                         }
                         MessageBox.Show("导出成功！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -198,6 +208,16 @@ namespace ScaleControl.UI.Forms
                     }
                 }
             }
+        }
+
+        private static string EscapeCsv(string value)
+        {
+            if (string.IsNullOrEmpty(value)) return "";
+            if (value.Contains(",") || value.Contains("\"") || value.Contains("\n") || value.Contains("\r"))
+            {
+                return "\"" + value.Replace("\"", "\"\"") + "\"";
+            }
+            return value;
         }
 
         private void btnReprint_Click(object sender, EventArgs e)
