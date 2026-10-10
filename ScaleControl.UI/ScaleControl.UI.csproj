@@ -45,6 +45,13 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Forms\MainForm.cs" />
+    <Compile Include="Controls\MenuBarControl.cs" />
+    <Compile Include="Controls\WeightDisplayPanel.cs" />
+    <Compile Include="Controls\EquipmentStatusPanel.cs" />
+    <Compile Include="Controls\DataInputPanel.cs" />
+    <Compile Include="Controls\VideoMonitorPanel.cs" />
+    <Compile Include="Controls\HistoryTarePanel.cs" />
+    <Compile Include="Controls\QuickDataBrowsePanel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
