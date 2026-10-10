@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DatabaseSettings>
+  <Provider>Access</Provider>
+  <Access>
+    <DatabasePath>Data\ScaleDB.mdb</DatabasePath>
+    <Password>sss2014aw</Password>
+  </Access>
+  <SqlServer>
+    <Server>192.168.1.100</Server>
+    <Database>ScaleDB</Database>
+    <User>sa</User>
+    <Password></Password>
+  </SqlServer>
+</DatabaseSettings>

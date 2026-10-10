@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HardwareSettings>
+  <Terminals>
+    <Terminal id="1" name="1#磅" type="MettlerToledoStatic">
+      <Enabled>true</Enabled>
+      <ConnectionType>Serial</ConnectionType>
+      <PortName>COM1</PortName>
+      <BaudRate>9600</BaudRate>
+      <DataBits>8</DataBits>
+      <StopBits>One</StopBits>
+      <Parity>None</Parity>
+      <StableDetectTime>3</StableDetectTime>
+      <StableAllowChange>20</StableAllowChange>
+      <MinWeight>1000</MinWeight>
+    </Terminal>
+  </Terminals>
+</HardwareSettings>
