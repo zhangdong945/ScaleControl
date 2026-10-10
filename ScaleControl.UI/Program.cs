@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using ScaleControl.Data;
 using ScaleControl.Models.Config;
 using ScaleControl.Models.Interfaces;
+using ScaleControl.Core;
 using ScaleControl.Hardware;
 
 namespace ScaleControl.UI
@@ -37,16 +38,24 @@ namespace ScaleControl.UI
                 return;
             }
 
-            // 加载硬件配置
-            var scaleConfigs = HardwareConfigLoader.Load("settings/hardware.xml");
+            // 创建仓储
+            var repository = new WeighingRepository(connFactory);
+
+            // 加载硬件配置并创建仪表驱动
+            var scaleConfig = HardwareConfigLoader.Load("settings/hardware.xml");
+            var scaleDriver = ScaleDriverFactory.CreateDriver(scaleConfig);
+
+            // 创建工作流
+            var workflow = new WeighingWorkflow(repository, scaleDriver, new AntiCheatConfig(), "01");
 
             // 显示登录窗口
             splash.Hide();
-            var login = new frmLogin(connFactory);
+            splash.Dispose();
+            var login = new frmLogin(repository);
             if (login.ShowDialog() != DialogResult.OK) return;
 
             // 显示主界面
-            Application.Run(new frmMain(connFactory, scaleConfigs, login.CurrentUser));
+            Application.Run(new frmMain(workflow, repository, login.CurrentUser));
         }
     }
 }
