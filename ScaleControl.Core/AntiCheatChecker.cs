@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using ScaleControl.Models.Entities;
+using ScaleControl.Models.Enums;
 
 namespace ScaleControl.Core
 {
@@ -228,7 +229,7 @@ namespace ScaleControl.Core
                 return new AntiCheatCheckResult { IsPassed = true };
 
             // 仅对配对称重模式检查
-            if (record.ScaleMode != "1")  // WeighingMode.Paired
+            if (!int.TryParse(record.ScaleMode, out int mode) || mode != (int)WeighingMode.Paired)
                 return new AntiCheatCheckResult { IsPassed = true };
 
             if (!record.GrossDateTime.HasValue || !record.TareDateTime.HasValue)
@@ -261,7 +262,7 @@ namespace ScaleControl.Core
                 return new AntiCheatCheckResult { IsPassed = true };
 
             double minutesDiff = Math.Abs((record.FirstDateTime.Value - record.SecondDateTime.Value).TotalMinutes);
-            if (minutesDiff < _config.TradeTimeDiffMinutes)
+            if (minutesDiff > _config.TradeTimeDiffMinutes)
             {
                 return new AntiCheatCheckResult
                 {
@@ -371,9 +372,9 @@ namespace ScaleControl.Core
         }
 
         /// <summary>
-        /// 9. 净重差异报警 — 比较当前净重与车辆最大净重, 超差报警
+        /// 9. 净重差异报警 — 比较当前净重与历史平均净重, 超差报警
         /// </summary>
-        public AntiCheatCheckResult CheckNetDiff(WeighingRecord record, TruckInfo truck)
+        public AntiCheatCheckResult CheckNetDiff(WeighingRecord record, TruckInfo truck, List<decimal> historyNetWeights)
         {
             if (!_config.EnableNetDiff)
                 return new AntiCheatCheckResult { IsPassed = true };
@@ -381,17 +382,20 @@ namespace ScaleControl.Core
             if (!record.Net.HasValue)
                 return new AntiCheatCheckResult { IsPassed = true };
 
-            // 使用车辆信息中的最大净重作为参考值
-            int? maxNet = truck?.MaxNet ?? record.MaxNet;
-            if (!maxNet.HasValue || maxNet.Value <= 0)
+            // 使用历史平均净重作为参考值
+            if (historyNetWeights == null || historyNetWeights.Count == 0)
                 return new AntiCheatCheckResult { IsPassed = true };
 
-            long net = record.Net.Value;
-            long diff = Math.Abs(net - maxNet.Value);
+            decimal referenceNet = historyNetWeights.Average();
+            if (referenceNet <= 0)
+                return new AntiCheatCheckResult { IsPassed = true };
+
+            decimal net = record.Net.Value;
+            decimal diff = Math.Abs(net - referenceNet);
 
             if (_config.NetDiffByPercentage)
             {
-                decimal percentage = (decimal)diff / maxNet.Value * 100m;
+                decimal percentage = diff / referenceNet * 100m;
                 if (percentage > _config.NetDiffThreshold)
                 {
                     return new AntiCheatCheckResult
@@ -427,7 +431,8 @@ namespace ScaleControl.Core
             WeighingRecord record,
             TruckInfo truck,
             DateTime now,
-            List<long> historyTareWeights = null)
+            List<long> historyTareWeights = null,
+            List<decimal> historyNetWeights = null)
         {
             var results = new List<AntiCheatCheckResult>();
 
@@ -439,7 +444,7 @@ namespace ScaleControl.Core
             results.Add(CheckTradeTimeDiff(record));
             results.Add(CheckWeightDiff(record));
             results.Add(CheckOverload(record, truck));
-            results.Add(CheckNetDiff(record, truck));
+            results.Add(CheckNetDiff(record, truck, historyNetWeights));
 
             return results;
         }
