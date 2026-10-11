@@ -4,6 +4,7 @@ using System.Net.Sockets;
 using System.Threading;
 using ScaleControl.Models.Entities;
 using ScaleControl.Models.Config;
+using ScaleControl.Models.Enums;
 using ScaleControl.Models.Interfaces;
 using ScaleControl.Hardware.Protocol;
 

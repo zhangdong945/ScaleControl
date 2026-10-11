@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -9,9 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ScaleControl.Models</RootNamespace>
     <AssemblyName>ScaleControl.Models</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -19,6 +20,7 @@
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <LangVersion>8.0</LangVersion>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -33,6 +35,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IO.Ports" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -40,6 +43,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Config\DatabaseConfig.cs" />
+    <Compile Include="Config\ScaleConnectionConfig.cs" />
+    <Compile Include="Entities\CustomerInfo.cs" />
+    <Compile Include="Entities\FieldLayout.cs" />
+    <Compile Include="Entities\LogQueryCriteria.cs" />
+    <Compile Include="Entities\MenuClass.cs" />
+    <Compile Include="Entities\MenuItem.cs" />
+    <Compile Include="Entities\OperationLog.cs" />
+    <Compile Include="Entities\ProductInfo.cs" />
+    <Compile Include="Entities\ReportInfo.cs" />
+    <Compile Include="Entities\RoleInfo.cs" />
+    <Compile Include="Entities\RolePermission.cs" />
+    <Compile Include="Entities\TruckInfo.cs" />
+    <Compile Include="Entities\UserInfo.cs" />
+    <Compile Include="Entities\WeighingQueryCriteria.cs" />
+    <Compile Include="Entities\WeighingRecord.cs" />
+    <Compile Include="Entities\WeightData.cs" />
+    <Compile Include="Enums\ConnectionType.cs" />
+    <Compile Include="Enums\RecordStatus.cs" />
+    <Compile Include="Enums\WeighingMode.cs" />
+    <Compile Include="Interfaces\IDatabaseConnectionFactory.cs" />
+    <Compile Include="Interfaces\IScaleDriver.cs" />
+    <Compile Include="Interfaces\IWeighingRepository.cs" />
+    <Compile Include="Interfaces\IWeighingWorkflow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

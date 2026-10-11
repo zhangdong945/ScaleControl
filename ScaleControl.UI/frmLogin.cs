@@ -1,5 +1,6 @@
 using System;
 using System.Windows.Forms;
+using ScaleControl.Models.Entities;
 using ScaleControl.Models.Interfaces;
 
 namespace ScaleControl.UI

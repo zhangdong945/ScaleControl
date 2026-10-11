@@ -3,6 +3,13 @@ using ScaleControl.Models.Enums;
 
 namespace ScaleControl.Core
 {
+    public class PairedResult
+    {
+        public long Gross { get; set; }
+        public long Tare { get; set; }
+        public long Net { get; set; }
+    }
+
     public static class WeightCalculator
     {
         /// <summary>
@@ -16,12 +23,12 @@ namespace ScaleControl.Core
         /// <summary>
         /// 配对称重: 比较两次重量，大=毛重，小=皮重
         /// </summary>
-        public static (long gross, long tare, long net) CalculatePaired(long firstWeight, long secondWeight)
+        public static PairedResult CalculatePaired(long firstWeight, long secondWeight)
         {
             long gross = System.Math.Max(firstWeight, secondWeight);
             long tare = System.Math.Min(firstWeight, secondWeight);
             long net = gross - tare;
-            return (gross, tare, net);
+            return new PairedResult { Gross = gross, Tare = tare, Net = net };
         }
 
         /// <summary>

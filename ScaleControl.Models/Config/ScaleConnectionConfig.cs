@@ -1,3 +1,4 @@
+using System.IO.Ports;
 using System.Xml.Serialization;
 using ScaleControl.Models.Enums;
 

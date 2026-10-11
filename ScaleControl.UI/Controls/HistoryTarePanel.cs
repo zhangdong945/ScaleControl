@@ -1,4 +1,5 @@
 using System;
+using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -103,7 +104,7 @@ namespace ScaleControl.UI.Controls
             avgTareLabel.Text = "平均皮重: " + avgTare.ToString("F2") + " kg";
         }
 
-        public void SetTareRecords(System.DataTable data)
+        public void SetTareRecords(DataTable data)
         {
             if (tareGrid.InvokeRequired)
             {

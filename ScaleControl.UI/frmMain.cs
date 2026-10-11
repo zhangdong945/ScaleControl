@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using ScaleControl.Models.Entities;
 using ScaleControl.Models.Interfaces;
 using ScaleControl.UI.Controls;
+using ModelsMenuItem = ScaleControl.Models.Entities.MenuItem;
 
 namespace ScaleControl.UI
 {
@@ -129,7 +130,7 @@ namespace ScaleControl.UI
         private void SubscribeToScaleDriver()
         {
             // Subscribe to weight updates from the workflow's scale driver
-            var driver = _workflow.ScaleDriver;
+            var driver = (_workflow as ScaleControl.Core.WeighingWorkflow)?.ScaleDriver;
             if (driver != null)
             {
                 driver.WeightUpdated += ScaleDriver_WeightUpdated;
@@ -152,7 +153,7 @@ namespace ScaleControl.UI
 
         #region Event Handlers
 
-        private void MenuBar_MenuItemClicked(object sender, MenuItem e)
+        private void MenuBar_MenuItemClicked(object sender, Controls.MenuItem e)
         {
             statusLabel.Text = "菜单: " + e.Title;
 

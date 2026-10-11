@@ -130,7 +130,7 @@ namespace ScaleControl.Core
             }
 
             // 2. 查询历史数据用于防作弊检查
-            List<decimal> historyTareWeights = null;
+            List<long> historyTareWeights = null;
             List<decimal> historyNetWeights = null;
             if (!string.IsNullOrEmpty(CurrentRecord.TruckNo))
             {
@@ -144,7 +144,7 @@ namespace ScaleControl.Core
                         new FieldCondition { FieldName = "TruckNo", Operator = "=", Value = CurrentRecord.TruckNo }
                     }
                 });
-                historyTareWeights = recentRecords.Where(r => r.Tare.HasValue).Select(r => (decimal)r.Tare.Value).ToList();
+                historyTareWeights = recentRecords.Where(r => r.Tare.HasValue).Select(r => r.Tare.Value).ToList();
                 historyNetWeights = recentRecords.Where(r => r.Net.HasValue).Select(r => (decimal)r.Net.Value).ToList();
             }
 
