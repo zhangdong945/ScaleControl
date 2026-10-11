@@ -9,11 +9,13 @@ namespace ScaleControl.UI.Forms
     {
         private DatabaseConfig _config;
         private readonly string _configPath;
+        private readonly string _appDir;
 
-        public frmDatabaseConfig(string configPath)
+        public frmDatabaseConfig(string configPath, string appDir)
         {
             InitializeComponent();
             _configPath = configPath;
+            _appDir = appDir;
         }
 
         private void frmDatabaseConfig_Load(object sender, EventArgs e)
@@ -34,7 +36,13 @@ namespace ScaleControl.UI.Forms
                     _config = new DatabaseConfig();
                 }
 
-                txtAccessPath.Text = _config.AccessDatabasePath;
+                // 显示绝对路径（如果是相对路径则转换为基于应用程序目录的绝对路径）
+                string dbPath = _config.AccessDatabasePath;
+                if (!string.IsNullOrEmpty(dbPath) && !System.IO.Path.IsPathRooted(dbPath) && _appDir != null)
+                {
+                    dbPath = System.IO.Path.Combine(_appDir, dbPath);
+                }
+                txtAccessPath.Text = dbPath;
                 txtAccessPassword.Text = _config.AccessPassword;
                 txtSqlHost.Text = _config.SqlServerHost;
                 txtSqlDatabase.Text = _config.SqlDatabase;
@@ -72,6 +80,12 @@ namespace ScaleControl.UI.Forms
                     {
                         MessageBox.Show("请输入Access数据库路径", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
+                    }
+                    // 转换为绝对路径
+                    if (!System.IO.Path.IsPathRooted(dbPath) && _appDir != null)
+                    {
+                        dbPath = System.IO.Path.Combine(_appDir, dbPath);
+                        testConfig.AccessDatabasePath = dbPath;
                     }
 
                     var factory = new AccessConnectionFactory(testConfig);
@@ -117,6 +131,11 @@ namespace ScaleControl.UI.Forms
                 if (_config.Provider == "Access")
                 {
                     string dbPath = _config.AccessDatabasePath;
+                    // 转换为绝对路径
+                    if (!System.IO.Path.IsPathRooted(dbPath) && _appDir != null)
+                    {
+                        dbPath = System.IO.Path.Combine(_appDir, dbPath);
+                    }
                     bool isNewDb = !System.IO.File.Exists(dbPath);
                     if (isNewDb)
                     {
@@ -189,10 +208,17 @@ namespace ScaleControl.UI.Forms
 
         private DatabaseConfig GetConfigFromFields()
         {
+            string dbPath = txtAccessPath.Text.Trim();
+            // 如果路径在应用程序目录下，存储为相对路径
+            if (!string.IsNullOrEmpty(dbPath) && _appDir != null && dbPath.StartsWith(_appDir, StringComparison.OrdinalIgnoreCase))
+            {
+                dbPath = dbPath.Substring(_appDir.Length).TrimStart('\\', '/');
+            }
+
             return new DatabaseConfig
             {
                 Provider = tabControl.SelectedTab == tabNetwork ? "SqlServer" : "Access",
-                AccessDatabasePath = txtAccessPath.Text.Trim(),
+                AccessDatabasePath = dbPath,
                 AccessPassword = txtAccessPassword.Text,
                 SqlServerHost = txtSqlHost.Text.Trim(),
                 SqlDatabase = txtSqlDatabase.Text.Trim(),

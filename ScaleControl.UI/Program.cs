@@ -23,14 +23,17 @@ namespace ScaleControl.UI
             Application.DoEvents();
             System.Threading.Thread.Sleep(2000);
 
-            // 检查数据库配置文件是否存在
-            string configPath = "settings/dbsettings.xml";
+            // 设置文件位于应用程序目录下的settings文件夹
+            string appDir = Application.StartupPath;
+            string configPath = System.IO.Path.Combine(appDir, "settings", "dbsettings.xml");
+            string hardwareConfigPath = System.IO.Path.Combine(appDir, "settings", "hardware.xml");
+
             if (!System.IO.File.Exists(configPath))
             {
                 // 配置文件不存在，显示数据库配置窗口
                 splash.Hide();
                 splash.Dispose();
-                using (var dbConfigForm = new frmDatabaseConfig(configPath))
+                using (var dbConfigForm = new frmDatabaseConfig(configPath, appDir))
                 {
                     if (dbConfigForm.ShowDialog() != DialogResult.OK)
                         return;
@@ -42,6 +45,12 @@ namespace ScaleControl.UI
 
             // 加载数据库配置
             var dbConfig = DatabaseConfigLoader.Load(configPath);
+
+            // 将相对路径转换为绝对路径（基于应用程序目录）
+            if (!System.IO.Path.IsPathRooted(dbConfig.AccessDatabasePath))
+            {
+                dbConfig.AccessDatabasePath = System.IO.Path.Combine(appDir, dbConfig.AccessDatabasePath);
+            }
 
             // 初始化数据库连接
             IDatabaseConnectionFactory connFactory = dbConfig.Provider == "Access"
@@ -63,7 +72,7 @@ namespace ScaleControl.UI
             var repository = new WeighingRepository(connFactory);
 
             // 加载硬件配置并创建仪表驱动
-            var scaleConfigs = HardwareConfigLoader.Load("settings/hardware.xml");
+            var scaleConfigs = HardwareConfigLoader.Load(hardwareConfigPath);
             var scaleConfig = scaleConfigs.Count > 0 ? scaleConfigs[0] : new ScaleConnectionConfig();
             var scaleDriver = ScaleDriverFactory.CreateDriver(scaleConfig);
 
