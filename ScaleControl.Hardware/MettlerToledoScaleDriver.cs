@@ -110,7 +110,7 @@ namespace ScaleControl.Hardware
         private void ProcessBuffer(byte[] buffer)
         {
             // 查找STX (0x02) 并解析18字节帧
-            for (int i = 0; i < buffer.Length - 17; i++)
+            for (int i = 0; i <= buffer.Length - 18; i++)
             {
                 if (buffer[i] == 0x02)
                 {
@@ -159,6 +159,7 @@ namespace ScaleControl.Hardware
         {
             Disconnect();
             _serialPort?.Dispose();
+            _networkStream?.Dispose();
             _tcpClient?.Dispose();
         }
     }

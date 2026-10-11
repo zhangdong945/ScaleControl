@@ -128,26 +128,12 @@ namespace ScaleControl.UI
 
         private void SubscribeToScaleDriver()
         {
-            // Try to get the scale driver from the workflow and subscribe to weight updates
-            try
+            // Subscribe to weight updates from the workflow's scale driver
+            var driver = _workflow.ScaleDriver;
+            if (driver != null)
             {
-                // Use reflection to access the private _scaleDriver field
-                var field = _workflow.GetType().GetField("_scaleDriver",
-                    System.Reflection.BindingFlags.NonPublic |
-                    System.Reflection.BindingFlags.Instance);
-                if (field != null)
-                {
-                    var driver = field.GetValue(_workflow) as IScaleDriver;
-                    if (driver != null)
-                    {
-                        driver.WeightUpdated += ScaleDriver_WeightUpdated;
-                        driver.ConnectionStatusChanged += ScaleDriver_ConnectionStatusChanged;
-                    }
-                }
-            }
-            catch
-            {
-                // If reflection fails, we'll rely on manual ReadWeight polling
+                driver.WeightUpdated += ScaleDriver_WeightUpdated;
+                driver.ConnectionStatusChanged += ScaleDriver_ConnectionStatusChanged;
             }
         }
 

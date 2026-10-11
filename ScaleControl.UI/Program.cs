@@ -38,11 +38,15 @@ namespace ScaleControl.UI
                 return;
             }
 
+            // 初始化数据库表（如果不存在）
+            dbInit.Initialize();
+
             // 创建仓储
             var repository = new WeighingRepository(connFactory);
 
             // 加载硬件配置并创建仪表驱动
-            var scaleConfig = HardwareConfigLoader.Load("settings/hardware.xml");
+            var scaleConfigs = HardwareConfigLoader.Load("settings/hardware.xml");
+            var scaleConfig = scaleConfigs.Count > 0 ? scaleConfigs[0] : new ScaleConnectionConfig();
             var scaleDriver = ScaleDriverFactory.CreateDriver(scaleConfig);
 
             // 创建工作流

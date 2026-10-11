@@ -19,6 +19,7 @@ namespace ScaleControl.Core
 
         public WeighingMode CurrentMode { get; private set; }
         public WeighingRecord CurrentRecord { get; private set; }
+        public IScaleDriver ScaleDriver => _scaleDriver;
 
         /// <summary>
         /// 允许读数：秤已连接且重量稳定
@@ -128,11 +129,32 @@ namespace ScaleControl.Core
                 truck = _repository.GetTruckByNumber(CurrentRecord.TruckNo);
             }
 
-            // 2. 执行防作弊检查
+            // 2. 查询历史数据用于防作弊检查
+            List<decimal> historyTareWeights = null;
+            List<decimal> historyNetWeights = null;
+            if (!string.IsNullOrEmpty(CurrentRecord.TruckNo))
+            {
+                var recentRecords = _repository.QueryRecords(new WeighingQueryCriteria
+                {
+                    DataType = "1",  // 交易记录
+                    StartTime = DateTime.Now.AddDays(-30),
+                    EndTime = DateTime.Now,
+                    FieldConditions = new List<FieldCondition>
+                    {
+                        new FieldCondition { FieldName = "TruckNo", Operator = "=", Value = CurrentRecord.TruckNo }
+                    }
+                });
+                historyTareWeights = recentRecords.Where(r => r.Tare.HasValue).Select(r => (decimal)r.Tare.Value).ToList();
+                historyNetWeights = recentRecords.Where(r => r.Net.HasValue).Select(r => (decimal)r.Net.Value).ToList();
+            }
+
+            // 3. 执行防作弊检查
             var checkResults = _antiCheatChecker.RunAllChecks(
                 CurrentRecord,
                 truck,
-                DateTime.Now);
+                DateTime.Now,
+                historyTareWeights,
+                historyNetWeights);
 
             var failedChecks = checkResults.Where(r => !r.IsPassed).ToList();
             if (failedChecks.Any())
@@ -145,17 +167,17 @@ namespace ScaleControl.Core
                 return false;
             }
 
-            // 3. 生成磅单号
+            // 4. 生成磅单号
             CurrentRecord.TicketNo1 = _ticketGenerator.Generate(CurrentRecord.Station1 ?? "01");
 
-            // 4. 设置称重时间
+            // 5. 设置称重时间
             if (!CurrentRecord.FirstDateTime.HasValue)
             {
                 CurrentRecord.FirstDateTime = DateTime.Now;
             }
             CurrentRecord.SecondDateTime = DateTime.Now;
 
-            // 5. 保存到数据库
+            // 6. 保存到数据库
             long id = _repository.SaveWeighingRecord(CurrentRecord);
             CurrentRecord.Id = id;
 

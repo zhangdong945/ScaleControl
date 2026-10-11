@@ -23,44 +23,44 @@ namespace ScaleControl.Core
     public class AntiCheatConfig
     {
         // 1. 皮重有效期检查
-        public bool EnableTareValidity { get; set; }
+        public bool EnableTareValidity { get; set; } = true;
 
         // 2. 净重区间检查
-        public bool EnableNetRange { get; set; }
+        public bool EnableNetRange { get; set; } = true;
         public long MinNetWeight { get; set; }
         public long MaxNetWeight { get; set; }
 
         // 3. 毛重区间检查
-        public bool EnableGrossRange { get; set; }
+        public bool EnableGrossRange { get; set; } = true;
         public long MinGrossWeight { get; set; }
         public long MaxGrossWeight { get; set; }
 
         // 4. 皮重差异报警
-        public bool EnableTareDiff { get; set; }
-        public bool TareDiffByPercentage { get; set;  // false=按绝对值, true=按百分比
-        public decimal TareDiffThreshold { get; set; }  // 绝对值(kg)或百分比(%)
-        public bool UseHistoryAvgTare { get; set; }     // true=按历史平均皮重, false=按车辆存储皮重
+        public bool EnableTareDiff { get; set; } = true;
+        public bool TareDiffByPercentage { get; set; } = false;  // false=按绝对值, true=按百分比
+        public decimal TareDiffThreshold { get; set; } = 100;  // 绝对值(kg)或百分比(%)
+        public bool UseHistoryAvgTare { get; set; } = true;     // true=按历史平均皮重, false=按车辆存储皮重
 
         // 5. 配对时间差报警
-        public bool EnablePairTimeDiff { get; set; }
-        public int PairTimeDiffMinutes { get; set; }
+        public bool EnablePairTimeDiff { get; set; } = true;
+        public int PairTimeDiffMinutes { get; set; } = 30;
 
         // 6. 交易时间差报警
-        public bool EnableTradeTimeDiff { get; set; }
-        public int TradeTimeDiffMinutes { get; set; }
+        public bool EnableTradeTimeDiff { get; set; } = true;
+        public int TradeTimeDiffMinutes { get; set; } = 30;
 
         // 7. 收发货重量检查
-        public bool EnableWeightDiff { get; set; }
-        public bool WeightDiffByPercentage { get; set;  // false=按绝对值, true=按百分比
-        public decimal WeightDiffThreshold { get; set; }  // 绝对值(kg)或百分比(%)
+        public bool EnableWeightDiff { get; set; } = true;
+        public bool WeightDiffByPercentage { get; set; } = true;  // false=按绝对值, true=按百分比
+        public decimal WeightDiffThreshold { get; set; } = 5;  // 绝对值(kg)或百分比(%)
 
         // 8. 超载检查
-        public bool EnableOverload { get; set; }
+        public bool EnableOverload { get; set; } = true;
 
         // 9. 净重差异报警
-        public bool EnableNetDiff { get; set; }
-        public bool NetDiffByPercentage { get; set;  // false=按绝对值, true=按百分比
-        public decimal NetDiffThreshold { get; set; }  // 绝对值(kg)或百分比(%)
+        public bool EnableNetDiff { get; set; } = true;
+        public bool NetDiffByPercentage { get; set; } = true;  // false=按绝对值, true=按百分比
+        public decimal NetDiffThreshold { get; set; } = 10;  // 绝对值(kg)或百分比(%)
     }
 
     /// <summary>

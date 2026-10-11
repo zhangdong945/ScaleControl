@@ -1,13 +1,21 @@
+using System.Xml.Serialization;
 using ScaleControl.Models.Enums;
 
 namespace ScaleControl.Models.Config
 {
+    [XmlType("Terminal")]
     public class ScaleConnectionConfig
     {
+        [XmlAttribute("id")]
         public int TerminalId { get; set; }
+
+        [XmlAttribute("name")]
         public string TerminalName { get; set; }
-        public string DeviceName { get; set; } = "标准MT仪表";
+
+        [XmlAttribute("type")]
         public string ScaleType { get; set; } = "MettlerToledoStatic";
+
+        public string DeviceName { get; set; } = "标准MT仪表";
         public bool Enabled { get; set; } = true;
         public ConnectionType ConnectionType { get; set; } = ConnectionType.Serial;
 
