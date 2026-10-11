@@ -1,7 +1,3 @@
--- ScaleControl Database Creation Script
--- MS Access / Jet SQL Syntax
--- Matches TOLEDO AVS table structure
-
 CREATE TABLE Trade (
     Id AUTOINCREMENT PRIMARY KEY,
     TicketNo1 TEXT(50),
@@ -39,18 +35,18 @@ CREATE TABLE Trade (
     Bc2 TEXT(50),
     ScaleWeightFlag TEXT(10),
     SpareFlag TEXT(10),
-    UploadFlag TEXT(10) DEFAULT '0',
-    DataEditFlag TEXT(10) DEFAULT '0',
-    DataStatus TEXT(10) DEFAULT '1',
-    ManualInputFlag TEXT(10) DEFAULT '0',
+    UploadFlag TEXT(10),
+    DataEditFlag TEXT(10),
+    DataStatus TEXT(10),
+    ManualInputFlag TEXT(10),
     ScaleMode TEXT(20),
-    FinalFlag TEXT(10) DEFAULT '0',
+    FinalFlag TEXT(10),
     LeftWeight LONG,
-    TareWeightAlarmFlag TEXT(10) DEFAULT '0',
-    TareTimeAlarmFlag TEXT(10) DEFAULT '0',
-    WeightTimeAlarmFlag TEXT(10) DEFAULT '0',
-    AutoSaveFlag TEXT(10) DEFAULT '0',
-    AuthFlag TEXT(10) DEFAULT '0',
+    TareWeightAlarmFlag TEXT(10),
+    TareTimeAlarmFlag TEXT(10),
+    WeightTimeAlarmFlag TEXT(10),
+    AutoSaveFlag TEXT(10),
+    AuthFlag TEXT(10),
     Driver TEXT(50),
     BusinessNo TEXT(50),
     IdNumber TEXT(50),
@@ -58,7 +54,7 @@ CREATE TABLE Trade (
     MaxGross LONG,
     MaxNet LONG,
     OwsCheckType TEXT(20),
-    ReprintCount LONG DEFAULT 0,
+    ReprintCount LONG,
     IdentifyTruckNo1 TEXT(50),
     IdentifyTruckNo2 TEXT(50),
     SpareStr1 TEXT(255),
@@ -88,10 +84,10 @@ CREATE TABLE Trade (
 
 CREATE TABLE TruckList (
     TruckNo TEXT(50) PRIMARY KEY,
-    Tare LONG DEFAULT 0,
+    Tare LONG,
     TareDate DATETIME,
     InputCode TEXT(50),
-    EffectDay LONG DEFAULT 0,
+    EffectDay LONG,
     Remark TEXT(255),
     MaxGross LONG,
     MaxNet LONG,
@@ -104,8 +100,8 @@ CREATE TABLE ProductList (
     Code TEXT(50),
     InputCode TEXT(50),
     Remark TEXT(255),
-    EnableMaxNetLimit BIT DEFAULT 0,
-    MaxNetLimit LONG DEFAULT 0
+    EnableMaxNetLimit BIT,
+    MaxNetLimit LONG
 );
 
 CREATE TABLE SenderList (
@@ -167,10 +163,10 @@ CREATE TABLE UserRoleCtrl (
     GroupId LONG,
     ModelId LONG,
     ModelChnName TEXT(100),
-    Search BIT DEFAULT 0,
-    Edit BIT DEFAULT 0,
-    Other1 BIT DEFAULT 0,
-    Other2 BIT DEFAULT 0
+    Search BIT,
+    Edit BIT,
+    Other1 BIT,
+    Other2 BIT
 );
 
 CREATE TABLE StationList (
@@ -197,7 +193,7 @@ CREATE TABLE SysMenuClassList (
     ClassId AUTOINCREMENT PRIMARY KEY,
     ChnText TEXT(100),
     EngText TEXT(100),
-    OrderNum LONG DEFAULT 0
+    OrderNum LONG
 );
 
 CREATE TABLE SysMenuList (
@@ -205,9 +201,9 @@ CREATE TABLE SysMenuList (
     ClassId LONG,
     ChnText TEXT(100),
     EngText TEXT(100),
-    ImageIndex LONG DEFAULT 0,
-    OrderNum LONG DEFAULT 0,
-    CanUseFlag BIT DEFAULT -1,
+    ImageIndex LONG,
+    OrderNum LONG,
+    CanUseFlag BIT,
     OperatorText TEXT(255)
 );
 
@@ -232,23 +228,23 @@ CREATE TABLE MainPosition (
     ScaleMode TEXT(20),
     FieldName TEXT(50),
     CtrlName TEXT(100),
-    Top LONG DEFAULT 0,
-    Left LONG DEFAULT 0,
-    Height LONG DEFAULT 0,
-    Width LONG DEFAULT 0,
+    Top LONG,
+    Left LONG,
+    Height LONG,
+    Width LONG,
     FontName TEXT(50),
-    FontSize REAL DEFAULT 0,
-    FontItalic BIT DEFAULT 0,
-    FontBold BIT DEFAULT 0,
+    FontSize REAL,
+    FontItalic BIT,
+    FontBold BIT,
     BackColor TEXT(50),
     ForeColor TEXT(50),
     LabelCaption TEXT(100),
-    TabOrder LONG DEFAULT 0,
-    IsVisible BIT DEFAULT -1,
-    IsReadOnly BIT DEFAULT 0,
-    IsClear BIT DEFAULT 0,
-    IsMustFill BIT DEFAULT 0,
-    IsMustExist BIT DEFAULT 0,
+    TabOrder LONG,
+    IsVisible BIT,
+    IsReadOnly BIT,
+    IsClear BIT,
+    IsMustFill BIT,
+    IsMustExist BIT,
     Formula TEXT(255)
 );
 
@@ -319,7 +315,7 @@ CREATE TABLE TrendLineList (
     RecordId LONG,
     WeightData DATETIME,
     WeightValue LONG,
-    StableFlag BIT DEFAULT 0
+    StableFlag BIT
 );
 
 CREATE TABLE KeyList (
