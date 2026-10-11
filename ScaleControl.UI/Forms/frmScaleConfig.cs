@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using ScaleControl.Data;
 using ScaleControl.Models.Config;
@@ -7,7 +8,7 @@ namespace ScaleControl.UI.Forms
 {
     public partial class frmScaleConfig : Form
     {
-        private ScaleConnectionConfig _config;
+        private List<ScaleConnectionConfig> _configs;
         private readonly string _configPath;
 
         public frmScaleConfig(string configPath)
@@ -29,13 +30,14 @@ namespace ScaleControl.UI.Forms
             {
                 if (System.IO.File.Exists(_configPath))
                 {
-                    _config = HardwareConfigLoader.Load(_configPath);
+                    _configs = HardwareConfigLoader.Load(_configPath);
                 }
                 else
                 {
-                    _config = new ScaleConnectionConfig();
+                    _configs = new List<ScaleConnectionConfig> { new ScaleConnectionConfig() };
                 }
 
+                var _config = _configs.Count > 0 ? _configs[0] : new ScaleConnectionConfig();
                 txtDeviceName.Text = _config.DeviceName;
                 txtPortName.Text = _config.PortName;
                 numBaudRate.Value = _config.BaudRate;
@@ -47,13 +49,13 @@ namespace ScaleControl.UI.Forms
                 numStableTime.Value = _config.StableDetectTime;
                 numStableChange.Value = _config.StableAllowChange;
                 numMinWeight.Value = _config.MinWeight;
-                rbSerial.Checked = _config.ConnectionType == ScaleControl.Models.Enums.ConnectionType.Serial;
-                rbNetwork.Checked = _config.ConnectionType == ScaleControl.Models.Enums.ConnectionType.Network;
+                rbSerial.Checked = _config.ConnectionType == global::ScaleControl.Models.Enums.ConnectionType.Serial;
+                rbNetwork.Checked = _config.ConnectionType == global::ScaleControl.Models.Enums.ConnectionType.Network;
             }
             catch (Exception ex)
             {
                 MessageBox.Show("加载配置失败: " + ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                _config = new ScaleConnectionConfig();
+                _configs = new List<ScaleConnectionConfig> { new ScaleConnectionConfig() };
             }
         }
 
@@ -61,14 +63,15 @@ namespace ScaleControl.UI.Forms
         {
             try
             {
+                var _config = _configs.Count > 0 ? _configs[0] : new ScaleConnectionConfig();
                 _config.DeviceName = txtDeviceName.Text.Trim();
                 _config.PortName = txtPortName.Text.Trim();
                 _config.BaudRate = (int)numBaudRate.Value;
                 _config.DataBits = (int)numDataBits.Value;
 
                 // StopBits and Parity are set via reflection to avoid System.IO.Ports dependency
-                SetEnumValue("StopBits", cmbStopBits.Text);
-                SetEnumValue("Parity", cmbParity.Text);
+                SetEnumValue(_config, "StopBits", cmbStopBits.Text);
+                SetEnumValue(_config, "Parity", cmbParity.Text);
 
                 _config.IpAddress = txtIpAddress.Text.Trim();
                 _config.Port = (int)numPort.Value;
@@ -76,15 +79,16 @@ namespace ScaleControl.UI.Forms
                 _config.StableAllowChange = (int)numStableChange.Value;
                 _config.MinWeight = (int)numMinWeight.Value;
                 _config.ConnectionType = rbSerial.Checked
-                    ? ScaleControl.Models.Enums.ConnectionType.Serial
-                    : ScaleControl.Models.Enums.ConnectionType.Network;
+                    ? global::ScaleControl.Models.Enums.ConnectionType.Serial
+                    : global::ScaleControl.Models.Enums.ConnectionType.Network;
 
+                _configs = new List<ScaleConnectionConfig> { _config };
                 string dir = System.IO.Path.GetDirectoryName(_configPath);
                 if (!string.IsNullOrEmpty(dir) && !System.IO.Directory.Exists(dir))
                 {
                     System.IO.Directory.CreateDirectory(dir);
                 }
-                HardwareConfigLoader.Save(_config, _configPath);
+                HardwareConfigLoader.Save(_configs, _configPath);
                 MessageBox.Show("配置保存成功！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 this.Close();
             }
@@ -99,11 +103,11 @@ namespace ScaleControl.UI.Forms
             this.Close();
         }
 
-        private void SetEnumValue(string propertyName, string value)
+        private void SetEnumValue(ScaleConnectionConfig config, string propertyName, string value)
         {
             try
             {
-                var prop = _config.GetType().GetProperty(propertyName);
+                var prop = config.GetType().GetProperty(propertyName);
                 if (prop != null)
                 {
                     var enumType = prop.PropertyType;
@@ -118,7 +122,7 @@ namespace ScaleControl.UI.Forms
                         {
                             parsed = Enum.Parse(enumType, value);
                         }
-                        prop.SetValue(_config, parsed);
+                        prop.SetValue(config, parsed);
                     }
                 }
             }

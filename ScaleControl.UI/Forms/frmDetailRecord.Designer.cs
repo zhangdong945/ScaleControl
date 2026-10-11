@@ -650,7 +650,7 @@ namespace ScaleControl.UI.Forms
             // dgvLogs
             this.dgvLogs.AllowUserToAddRows = false;
             this.dgvLogs.AllowUserToDeleteRows = false;
-            this.dgvLogs.AutoSizeColumnsMode = System.Windows.Forms.AutoSizeColumnsMode.DisplayedCells;
+            this.dgvLogs.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
             this.dgvLogs.BackgroundColor = System.Drawing.Color.White;
             this.dgvLogs.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvLogs.Dock = System.Windows.Forms.DockStyle.Fill;

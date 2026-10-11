@@ -72,7 +72,7 @@ namespace ScaleControl.UI.Forms
                 else
                 {
                     // For SQL Server, use DatabaseInitializer.TestConnection
-                    var factory = new ScaleControl.Data.SqlConnectionFactory(testConfig.GetSqlServerConnectionString());
+                    var factory = new ScaleControl.Data.SqlConnectionFactory(testConfig);
                     var initializer = new DatabaseInitializer(factory);
                     bool success = initializer.TestConnection();
                     if (success)

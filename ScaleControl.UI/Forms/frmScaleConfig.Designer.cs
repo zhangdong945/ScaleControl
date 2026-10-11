@@ -138,7 +138,7 @@ namespace ScaleControl.UI.Forms
             // numBaudRate
             //
             this.numBaudRate.Location = new System.Drawing.Point(220, 7);
-            this.numBaudRate.Maximum = new decimal(new int() { 115200, 0, 0, 0 });
+            this.numBaudRate.Maximum = new decimal(new int[] { 115200, 0, 0, 0 });
             this.numBaudRate.Name = "numBaudRate";
             this.numBaudRate.Size = new System.Drawing.Size(80, 21);
             this.numBaudRate.TabIndex = 3;
