@@ -11,3 +11,7 @@
 *.ncb
 *.opensdf
 *.sdf
+
+## Third-party SDKs (not committed)
+HCNetSDK/
+FastReport.Community.2026.2.0/
