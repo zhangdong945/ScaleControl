@@ -49,6 +49,9 @@
     <Compile Include="SqlConnectionFactory.cs" />
     <Compile Include="WeighingRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Scripts\CreateAccessTables.sql">
+      <LogicalName>CreateAccessTables.sql</LogicalName>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ScaleControl.Models\ScaleControl.Models.csproj">
