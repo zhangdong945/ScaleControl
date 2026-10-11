@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -46,8 +46,20 @@
     <Compile Include="DatabaseConfigLoader.cs" />
     <Compile Include="DatabaseInitializer.cs" />
     <Compile Include="HardwareConfigLoader.cs" />
+    <Compile Include="RepositoryBase.cs" />
     <Compile Include="SqlConnectionFactory.cs" />
     <Compile Include="WeighingRepository.cs" />
+    <Compile Include="Repositories\CustomerRepository.cs" />
+    <Compile Include="Repositories\FieldLayoutRepository.cs" />
+    <Compile Include="Repositories\LogRepository.cs" />
+    <Compile Include="Repositories\MenuRepository.cs" />
+    <Compile Include="Repositories\ProductRepository.cs" />
+    <Compile Include="Repositories\ReportRepository.cs" />
+    <Compile Include="Repositories\RoleRepository.cs" />
+    <Compile Include="Repositories\TicketNumberGenerator.cs" />
+    <Compile Include="Repositories\TradeRepository.cs" />
+    <Compile Include="Repositories\TruckRepository.cs" />
+    <Compile Include="Repositories\UserRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Templates\empty_db.mdb">
       <LogicalName>empty_db.mdb</LogicalName>
