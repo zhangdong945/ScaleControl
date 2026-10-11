@@ -5,6 +5,7 @@ using ScaleControl.Models.Config;
 using ScaleControl.Models.Interfaces;
 using ScaleControl.Core;
 using ScaleControl.Hardware;
+using ScaleControl.UI.Forms;
 
 namespace ScaleControl.UI
 {
@@ -22,8 +23,25 @@ namespace ScaleControl.UI
             Application.DoEvents();
             System.Threading.Thread.Sleep(2000);
 
+            // 检查数据库配置文件是否存在
+            string configPath = "settings/dbsettings.xml";
+            if (!System.IO.File.Exists(configPath))
+            {
+                // 配置文件不存在，显示数据库配置窗口
+                splash.Hide();
+                splash.Dispose();
+                using (var dbConfigForm = new frmDatabaseConfig(configPath))
+                {
+                    if (dbConfigForm.ShowDialog() != DialogResult.OK)
+                        return;
+                }
+                splash = new frmSplash();
+                splash.Show();
+                Application.DoEvents();
+            }
+
             // 加载数据库配置
-            var dbConfig = DatabaseConfigLoader.Load("settings/dbsettings.xml");
+            var dbConfig = DatabaseConfigLoader.Load(configPath);
 
             // 初始化数据库连接
             IDatabaseConnectionFactory connFactory = dbConfig.Provider == "Access"
