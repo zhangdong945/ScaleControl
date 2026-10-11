@@ -178,22 +178,34 @@ namespace ScaleControl.UI.Forms
         }
 
         /// <summary>
-        /// 创建Access数据库文件（.mdb格式）
+        /// 创建Access数据库文件（从模板复制）
         /// </summary>
         private void CreateAccessDatabase(string dbPath, string password)
         {
             try
             {
-                // 使用ADOX创建Access数据库
-                var catalogType = Type.GetTypeFromProgID("ADOX.Catalog");
-                if (catalogType == null)
+                // 从嵌入资源中复制空白数据库模板
+                var assembly = System.Reflection.Assembly.GetExecutingAssembly();
+                string templateName = null;
+                foreach (var name in assembly.GetManifestResourceNames())
                 {
-                    throw new System.InvalidOperationException("无法创建ADOX.Catalog对象，请确保已安装Access数据库引擎。");
+                    if (name.EndsWith("EmptyDatabase.mdb"))
+                    {
+                        templateName = name;
+                        break;
+                    }
                 }
-                dynamic catalog = System.Activator.CreateInstance(catalogType);
-                string connectionString = $"Provider=Microsoft.Jet.OLEDB.4.0;Data Source={dbPath};Jet OLEDB:Database Password={password};";
-                catalog.Create(connectionString);
-                System.Runtime.InteropServices.Marshal.ReleaseComObject(catalog);
+                if (templateName == null)
+                {
+                    throw new System.InvalidOperationException("找不到数据库模板文件。");
+                }
+                using (var stream = assembly.GetManifestResourceStream(templateName))
+                {
+                    using (var fileStream = new System.IO.FileStream(dbPath, System.IO.FileMode.Create))
+                    {
+                        stream.CopyTo(fileStream);
+                    }
+                }
             }
             catch (System.Exception ex)
             {

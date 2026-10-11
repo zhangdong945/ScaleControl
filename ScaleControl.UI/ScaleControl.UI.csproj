@@ -200,6 +200,9 @@
     <EmbeddedResource Include="Forms\frmDatabaseConfig.resx">
       <DependentUpon>frmDatabaseConfig.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Templates\EmptyDatabase.mdb">
+      <LogicalName>EmptyDatabase.mdb</LogicalName>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
