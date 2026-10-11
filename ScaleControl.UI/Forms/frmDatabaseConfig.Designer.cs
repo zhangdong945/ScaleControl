@@ -137,6 +137,7 @@ namespace ScaleControl.UI.Forms
             this.tabNetwork.Controls.Add(this.txtSqlUser);
             this.tabNetwork.Controls.Add(this.lblSqlPassword);
             this.tabNetwork.Controls.Add(this.txtSqlPassword);
+            this.tabNetwork.Controls.Add(this.btnCreateSqlDb);
             this.tabNetwork.Location = new System.Drawing.Point(8, 39);
             this.tabNetwork.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.tabNetwork.Name = "tabNetwork";
@@ -218,7 +219,18 @@ namespace ScaleControl.UI.Forms
             this.txtSqlPassword.PasswordChar = '*';
             this.txtSqlPassword.Size = new System.Drawing.Size(236, 35);
             this.txtSqlPassword.TabIndex = 7;
-            // 
+            //
+            // btnCreateSqlDb
+            //
+            this.btnCreateSqlDb.Location = new System.Drawing.Point(44, 218);
+            this.btnCreateSqlDb.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.btnCreateSqlDb.Name = "btnCreateSqlDb";
+            this.btnCreateSqlDb.Size = new System.Drawing.Size(180, 56);
+            this.btnCreateSqlDb.TabIndex = 8;
+            this.btnCreateSqlDb.Text = "建立空白数据";
+            this.btnCreateSqlDb.UseVisualStyleBackColor = true;
+            this.btnCreateSqlDb.Click += new System.EventHandler(this.btnCreateSqlDb_Click);
+            //
             // btnTest
             // 
             this.btnTest.Location = new System.Drawing.Point(200, 590);
@@ -294,6 +306,7 @@ namespace ScaleControl.UI.Forms
         private System.Windows.Forms.TextBox txtSqlUser;
         private System.Windows.Forms.Label lblSqlPassword;
         private System.Windows.Forms.TextBox txtSqlPassword;
+        private System.Windows.Forms.Button btnCreateSqlDb;
         private System.Windows.Forms.Button btnTest;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnCancel;

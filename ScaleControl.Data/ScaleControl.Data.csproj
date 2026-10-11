@@ -52,6 +52,9 @@
     <EmbeddedResource Include="Templates\empty_db.mdb">
       <LogicalName>empty_db.mdb</LogicalName>
     </EmbeddedResource>
+    <EmbeddedResource Include="Scripts\CreateSqlServerTables.sql">
+      <LogicalName>CreateSqlServerTables.sql</LogicalName>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ScaleControl.Models\ScaleControl.Models.csproj">

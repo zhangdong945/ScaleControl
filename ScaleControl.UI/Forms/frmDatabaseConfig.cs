@@ -10,6 +10,7 @@ namespace ScaleControl.UI.Forms
         private DatabaseConfig _config;
         private readonly string _configPath;
         private readonly string _appDir;
+        private readonly string _access_db_filename = "sc.mdb";
 
         public frmDatabaseConfig(string configPath, string appDir)
         {
@@ -215,7 +216,7 @@ namespace ScaleControl.UI.Forms
                     System.IO.Directory.CreateDirectory(dbDir);
                 }
 
-                string dbPath = System.IO.Path.Combine(dbDir, "sc.mdb");
+                string dbPath = System.IO.Path.Combine(dbDir, _access_db_filename);
                 const string password = "sss2014aw";
 
                 if (System.IO.File.Exists(dbPath))
@@ -238,6 +239,41 @@ namespace ScaleControl.UI.Forms
                 txtAccessPassword.Text = password;
 
                 MessageBox.Show("数据库创建成功！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (System.Exception ex)
+            {
+                MessageBox.Show("创建数据库失败: " + ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnCreateSqlDb_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var testConfig = GetConfigFromFields();
+                if (testConfig.Provider != "SqlServer")
+                {
+                    MessageBox.Show("请切换到网络数据库页签并填写SQL Server连接信息。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                if (string.IsNullOrEmpty(testConfig.SqlServerHost) || string.IsNullOrEmpty(testConfig.SqlDatabase)
+                    || string.IsNullOrEmpty(testConfig.SqlUser) || string.IsNullOrEmpty(testConfig.SqlPassword))
+                {
+                    MessageBox.Show("请填写完整的SQL Server连接信息。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                var testFactory = new SqlConnectionFactory(testConfig);
+                using (var connection = testFactory.CreateConnection())
+                {
+                    connection.Open();
+                }
+
+                var initializer = new DatabaseInitializer(testFactory);
+                initializer.CreateSqlServerDatabase(testConfig.SqlServerHost, testConfig.SqlDatabase, testConfig.SqlUser, testConfig.SqlPassword);
+
+                MessageBox.Show("SQL Server数据库创建成功！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (System.Exception ex)
             {

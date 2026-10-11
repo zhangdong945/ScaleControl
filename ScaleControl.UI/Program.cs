@@ -65,6 +65,11 @@ namespace ScaleControl.UI
                 return;
             }
 
+            if (dbConfig.Provider == "SqlServer")
+            {
+                dbInit.CreateSqlServerDatabase(dbConfig.SqlServerHost, dbConfig.SqlDatabase, dbConfig.SqlUser, dbConfig.SqlPassword);
+            }
+
             // 创建仓储
             var repository = new WeighingRepository(connFactory);
 
