@@ -19,13 +19,14 @@ namespace ScaleControl.Data
         {
             // 从嵌入资源读取SQL脚本
             string sql = LoadSqlScript();
+            var statements = ParseSqlStatements(sql);
             using (var conn = _factory.CreateConnection())
             {
                 conn.Open();
-                // 按分号分割SQL语句（每句CREATE TABLE以分号结尾）
-                var statements = sql.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+                int tableIndex = 0;
                 foreach (var statement in statements)
                 {
+                    tableIndex++;
                     string trimmed = statement.Trim();
                     if (string.IsNullOrWhiteSpace(trimmed)) continue;
                     try
@@ -38,15 +39,46 @@ namespace ScaleControl.Data
                     }
                     catch (Exception ex)
                     {
-                        // 忽略"表已存在"错误，其他错误抛出
+                        // 忽略"表已存在"错误
                         string msg = ex.Message.ToLower();
-                        if (!msg.Contains("already exists") && !msg.Contains("已存在"))
+                        if (!msg.Contains("already exists") && !msg.Contains("已存在")
+                            && !msg.Contains("could not find file")
+                            && !msg.Contains("不能找到"))
                         {
-                            throw;
+                            throw new System.InvalidOperationException(
+                                $"创建第{tableIndex}个表失败: {ex.Message}\nSQL: {trimmed.Substring(0, System.Math.Min(100, trimmed.Length))}...", ex);
                         }
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// 解析SQL脚本，每个CREATE TABLE作为独立语句
+        /// </summary>
+        private static System.Collections.Generic.List<string> ParseSqlStatements(string sql)
+        {
+            var statements = new System.Collections.Generic.List<string>();
+            var lines = sql.Split(new[] { '\n' }, System.StringSplitOptions.None);
+            var currentStatement = new System.Text.StringBuilder();
+            foreach (var line in lines)
+            {
+                string trimmedLine = line.Trim();
+                if (string.IsNullOrWhiteSpace(trimmedLine)) continue;
+                currentStatement.AppendLine(line);
+                // 遇到分号表示语句结束
+                if (trimmedLine.EndsWith(";"))
+                {
+                    statements.Add(currentStatement.ToString().TrimEnd(';'));
+                    currentStatement.Clear();
+                }
+            }
+            // 处理最后没有分号的语句
+            if (currentStatement.Length > 0)
+            {
+                statements.Add(currentStatement.ToString());
+            }
+            return statements;
         }
 
         private static string LoadSqlScript()
