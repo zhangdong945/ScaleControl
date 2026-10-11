@@ -17,15 +17,19 @@ namespace ScaleControl.Data
 
         public void Initialize()
         {
-            using var conn = _factory.CreateConnection();
-            conn.Open();
-            var sql = File.ReadAllText("Scripts/CreateAccessTables.sql");
-            foreach (var batch in sql.Split(new[] { "GO" }, StringSplitOptions.RemoveEmptyEntries))
+            using (var conn = _factory.CreateConnection())
             {
-                if (string.IsNullOrWhiteSpace(batch)) continue;
-                using var cmd = conn.CreateCommand();
-                cmd.CommandText = batch.Trim();
-                cmd.ExecuteNonQuery();
+                conn.Open();
+                var sql = File.ReadAllText("Scripts/CreateAccessTables.sql");
+                foreach (var batch in sql.Split(new[] { "GO" }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    if (string.IsNullOrWhiteSpace(batch)) continue;
+                    using (var cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = batch.Trim();
+                        cmd.ExecuteNonQuery();
+                    }
+                }
             }
         }
 
@@ -33,9 +37,11 @@ namespace ScaleControl.Data
         {
             try
             {
-                using var conn = _factory.CreateConnection();
-                conn.Open();
-                return true;
+                using (var conn = _factory.CreateConnection())
+                {
+                    conn.Open();
+                    return true;
+                }
             }
             catch
             {
