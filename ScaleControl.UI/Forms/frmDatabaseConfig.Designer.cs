@@ -52,8 +52,10 @@ namespace ScaleControl.UI.Forms
             //
             this.tabLocal.Controls.Add(this.lblAccessPath);
             this.tabLocal.Controls.Add(this.txtAccessPath);
+            this.tabLocal.Controls.Add(this.btnBrowse);
             this.tabLocal.Controls.Add(this.lblAccessPassword);
             this.tabLocal.Controls.Add(this.txtAccessPassword);
+            this.tabLocal.Controls.Add(this.btnCreateDb);
             this.tabLocal.Location = new System.Drawing.Point(4, 22);
             this.tabLocal.Name = "tabLocal";
             this.tabLocal.Padding = new System.Windows.Forms.Padding(10);
@@ -87,14 +89,24 @@ namespace ScaleControl.UI.Forms
             this.lblAccessPath.Name = "lblAccessPath";
             this.lblAccessPath.Size = new System.Drawing.Size(77, 12);
             this.lblAccessPath.TabIndex = 0;
-            this.lblAccessPath.Text = "数据库路径：";
+            this.lblAccessPath.Text = "数据库文件：";
             //
             // txtAccessPath
             //
             this.txtAccessPath.Location = new System.Drawing.Point(100, 27);
             this.txtAccessPath.Name = "txtAccessPath";
-            this.txtAccessPath.Size = new System.Drawing.Size(320, 21);
+            this.txtAccessPath.Size = new System.Drawing.Size(290, 21);
             this.txtAccessPath.TabIndex = 1;
+            //
+            // btnBrowse
+            //
+            this.btnBrowse.Location = new System.Drawing.Point(395, 26);
+            this.btnBrowse.Name = "btnBrowse";
+            this.btnBrowse.Size = new System.Drawing.Size(30, 23);
+            this.btnBrowse.TabIndex = 4;
+            this.btnBrowse.Text = "...";
+            this.btnBrowse.UseVisualStyleBackColor = true;
+            this.btnBrowse.Click += new System.EventHandler(this.btnBrowse_Click);
             //
             // lblAccessPassword
             //
@@ -112,6 +124,16 @@ namespace ScaleControl.UI.Forms
             this.txtAccessPassword.PasswordChar = '*';
             this.txtAccessPassword.Size = new System.Drawing.Size(200, 21);
             this.txtAccessPassword.TabIndex = 3;
+            //
+            // btnCreateDb
+            //
+            this.btnCreateDb.Location = new System.Drawing.Point(100, 100);
+            this.btnCreateDb.Name = "btnCreateDb";
+            this.btnCreateDb.Size = new System.Drawing.Size(90, 28);
+            this.btnCreateDb.TabIndex = 5;
+            this.btnCreateDb.Text = "创建数据库";
+            this.btnCreateDb.UseVisualStyleBackColor = true;
+            this.btnCreateDb.Click += new System.EventHandler(this.btnCreateDb_Click);
             //
             // lblSqlHost
             //
@@ -236,8 +258,10 @@ namespace ScaleControl.UI.Forms
         private System.Windows.Forms.TabPage tabNetwork;
         private System.Windows.Forms.Label lblAccessPath;
         private System.Windows.Forms.TextBox txtAccessPath;
+        private System.Windows.Forms.Button btnBrowse;
         private System.Windows.Forms.Label lblAccessPassword;
         private System.Windows.Forms.TextBox txtAccessPassword;
+        private System.Windows.Forms.Button btnCreateDb;
         private System.Windows.Forms.Label lblSqlHost;
         private System.Windows.Forms.TextBox txtSqlHost;
         private System.Windows.Forms.Label lblSqlDatabase;

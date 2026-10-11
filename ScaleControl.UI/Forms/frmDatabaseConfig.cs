@@ -206,6 +206,80 @@ namespace ScaleControl.UI.Forms
             this.Close();
         }
 
+        private void btnBrowse_Click(object sender, EventArgs e)
+        {
+            using (var dlg = new OpenFileDialog())
+            {
+                dlg.Filter = "Access数据库文件 (*.mdb)|*.mdb|所有文件 (*.*)|*.*";
+                dlg.Title = "选择Access数据库文件";
+                if (!string.IsNullOrEmpty(txtAccessPath.Text))
+                {
+                    try
+                    {
+                        dlg.InitialDirectory = System.IO.Path.GetDirectoryName(txtAccessPath.Text);
+                    }
+                    catch
+                    {
+                        // ignore
+                    }
+                }
+                if (dlg.ShowDialog(this) == DialogResult.OK)
+                {
+                    txtAccessPath.Text = dlg.FileName;
+                }
+            }
+        }
+
+        private void btnCreateDb_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string dbDir = System.IO.Path.Combine(_appDir, "database");
+                if (!System.IO.Directory.Exists(dbDir))
+                {
+                    System.IO.Directory.CreateDirectory(dbDir);
+                }
+
+                string dbPath = System.IO.Path.Combine(dbDir, "sc.mdb");
+                const string password = "sss2014aw";
+
+                if (System.IO.File.Exists(dbPath))
+                {
+                    var result = MessageBox.Show(
+                        $"数据库文件已存在：{dbPath}\n\n是否覆盖？",
+                        "确认覆盖",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question);
+                    if (result != DialogResult.Yes)
+                    {
+                        return;
+                    }
+                    System.IO.File.Delete(dbPath);
+                }
+
+                CreateAccessDatabase(dbPath, password);
+
+                var tempConfig = new DatabaseConfig
+                {
+                    Provider = "Access",
+                    AccessDatabasePath = dbPath,
+                    AccessPassword = password
+                };
+                var factory = new AccessConnectionFactory(tempConfig);
+                var initializer = new DatabaseInitializer(factory);
+                initializer.Initialize();
+
+                txtAccessPath.Text = dbPath;
+                txtAccessPassword.Text = password;
+
+                MessageBox.Show("数据库创建成功！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (System.Exception ex)
+            {
+                MessageBox.Show("创建数据库失败: " + ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
         private DatabaseConfig GetConfigFromFields()
         {
             string dbPath = txtAccessPath.Text.Trim();
