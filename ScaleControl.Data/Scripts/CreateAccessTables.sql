@@ -148,7 +148,7 @@ CREATE TABLE UserList (
     LogName TEXT(50),
     UserName TEXT(50),
     GroupName TEXT(50),
-    Password TEXT(100),
+    [Password] TEXT(100),
     Remark TEXT(255)
 );
 
