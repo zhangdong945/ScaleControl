@@ -9,7 +9,7 @@ namespace ScaleControl.Models.Config
         public string Provider { get; set; } = "Access";  // Access / SqlServer
 
         [XmlElement("AccessDatabasePath")]
-        public string AccessDatabasePath { get; set; } = "Data\\ScaleDB.mdb";
+        public string AccessDatabasePath { get; set; } = "database\\sc.mdb";
 
         [XmlElement("AccessPassword")]
         public string AccessPassword { get; set; } = "sss2014aw";

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <DatabaseSettings>
   <Provider>Access</Provider>
-  <AccessDatabasePath>Data\ScaleDB.mdb</AccessDatabasePath>
+  <AccessDatabasePath>database\sc.mdb</AccessDatabasePath>
   <AccessPassword>sss2014aw</AccessPassword>
   <SqlServerHost>192.168.1.100</SqlServerHost>
   <SqlDatabase>ScaleDB</SqlDatabase>
