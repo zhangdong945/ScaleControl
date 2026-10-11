@@ -14,8 +14,6 @@ namespace ScaleControl.UI.Forms
         {
             InitializeComponent();
             _configPath = configPath;
-            this.StartPosition = FormStartPosition.CenterScreen;
-            this.Text = "数据库配置";
         }
 
         private void frmDatabaseConfig_Load(object sender, EventArgs e)
@@ -42,8 +40,16 @@ namespace ScaleControl.UI.Forms
                 txtSqlDatabase.Text = _config.SqlDatabase;
                 txtSqlUser.Text = _config.SqlUser;
                 txtSqlPassword.Text = _config.SqlPassword;
-                rbAccess.Checked = _config.Provider == "Access";
-                rbSqlServer.Checked = _config.Provider == "SqlServer";
+
+                // Select tab based on provider
+                if (_config.Provider == "SqlServer")
+                {
+                    tabControl.SelectedTab = tabNetwork;
+                }
+                else
+                {
+                    tabControl.SelectedTab = tabLocal;
+                }
             }
             catch (Exception ex)
             {
@@ -57,34 +63,35 @@ namespace ScaleControl.UI.Forms
             try
             {
                 var testConfig = GetConfigFromFields();
+
                 if (testConfig.Provider == "Access")
                 {
-                    // For Access, just check if the file path is valid
-                    string path = txtAccessPath.Text.Trim();
-                    if (string.IsNullOrEmpty(path))
+                    // For Access: create connection factory, create connection, open to verify
+                    string dbPath = testConfig.AccessDatabasePath;
+                    if (string.IsNullOrEmpty(dbPath))
                     {
                         MessageBox.Show("请输入Access数据库路径", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
                     }
-                    MessageBox.Show("Access配置已填写，请确保数据库文件存在。", "测试连接",
+
+                    var factory = new AccessConnectionFactory(testConfig);
+                    using (var connection = factory.CreateConnection())
+                    {
+                        connection.Open();
+                    }
+                    MessageBox.Show("Access连接成功！", "测试连接",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
                 {
-                    // For SQL Server, use DatabaseInitializer.TestConnection
-                    var factory = new ScaleControl.Data.SqlConnectionFactory(testConfig);
-                    var initializer = new DatabaseInitializer(factory);
-                    bool success = initializer.TestConnection();
-                    if (success)
+                    // For SQL Server: create connection factory, create connection, open to verify
+                    var factory = new SqlConnectionFactory(testConfig);
+                    using (var connection = factory.CreateConnection())
                     {
-                        MessageBox.Show("SQL Server连接成功！", "测试连接",
-                            MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        connection.Open();
                     }
-                    else
-                    {
-                        MessageBox.Show("SQL Server连接失败，请检查配置。", "测试连接",
-                            MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    }
+                    MessageBox.Show("SQL Server连接成功！", "测试连接",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
             catch (Exception ex)
@@ -184,7 +191,7 @@ namespace ScaleControl.UI.Forms
         {
             return new DatabaseConfig
             {
-                Provider = rbAccess.Checked ? "Access" : "SqlServer",
+                Provider = tabControl.SelectedTab == tabNetwork ? "SqlServer" : "Access",
                 AccessDatabasePath = txtAccessPath.Text.Trim(),
                 AccessPassword = txtAccessPassword.Text,
                 SqlServerHost = txtSqlHost.Text.Trim(),
@@ -192,24 +199,6 @@ namespace ScaleControl.UI.Forms
                 SqlUser = txtSqlUser.Text.Trim(),
                 SqlPassword = txtSqlPassword.Text
             };
-        }
-
-        private void rbAccess_CheckedChanged(object sender, EventArgs e)
-        {
-            if (rbAccess.Checked)
-            {
-                panelAccess.Enabled = true;
-                panelSqlServer.Enabled = false;
-            }
-        }
-
-        private void rbSqlServer_CheckedChanged(object sender, EventArgs e)
-        {
-            if (rbSqlServer.Checked)
-            {
-                panelAccess.Enabled = false;
-                panelSqlServer.Enabled = true;
-            }
         }
     }
 }
