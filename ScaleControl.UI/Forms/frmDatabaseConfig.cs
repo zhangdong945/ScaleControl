@@ -98,11 +98,29 @@ namespace ScaleControl.UI.Forms
             try
             {
                 _config = GetConfigFromFields();
-                string dir = System.IO.Path.GetDirectoryName(_configPath);
-                if (!string.IsNullOrEmpty(dir) && !System.IO.Directory.Exists(dir))
+
+                // 确保配置文件目录存在
+                string configDir = System.IO.Path.GetDirectoryName(_configPath);
+                if (!string.IsNullOrEmpty(configDir) && !System.IO.Directory.Exists(configDir))
                 {
-                    System.IO.Directory.CreateDirectory(dir);
+                    System.IO.Directory.CreateDirectory(configDir);
                 }
+
+                // 如果使用Access且数据库文件不存在，自动创建
+                if (_config.Provider == "Access")
+                {
+                    string dbPath = _config.AccessDatabasePath;
+                    if (!System.IO.File.Exists(dbPath))
+                    {
+                        string dbDir = System.IO.Path.GetDirectoryName(dbPath);
+                        if (!string.IsNullOrEmpty(dbDir) && !System.IO.Directory.Exists(dbDir))
+                        {
+                            System.IO.Directory.CreateDirectory(dbDir);
+                        }
+                        CreateAccessDatabase(dbPath, _config.AccessPassword);
+                    }
+                }
+
                 DatabaseConfigLoader.Save(_config, _configPath);
                 MessageBox.Show("配置保存成功！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 this.Close();
@@ -110,6 +128,30 @@ namespace ScaleControl.UI.Forms
             catch (Exception ex)
             {
                 MessageBox.Show("保存失败: " + ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// 创建Access数据库文件（.mdb格式）
+        /// </summary>
+        private void CreateAccessDatabase(string dbPath, string password)
+        {
+            try
+            {
+                // 使用ADOX创建Access数据库
+                var catalogType = Type.GetTypeFromProgID("ADOX.Catalog");
+                if (catalogType == null)
+                {
+                    throw new System.InvalidOperationException("无法创建ADOX.Catalog对象，请确保已安装Access数据库引擎。");
+                }
+                dynamic catalog = System.Activator.CreateInstance(catalogType);
+                string connectionString = $"Provider=Microsoft.Jet.OLEDB.4.0;Data Source={dbPath};Jet OLEDB:Database Password={password};";
+                catalog.Create(connectionString);
+                System.Runtime.InteropServices.Marshal.ReleaseComObject(catalog);
+            }
+            catch (System.Exception ex)
+            {
+                throw new System.InvalidOperationException($"创建Access数据库失败: {ex.Message}", ex);
             }
         }
 
