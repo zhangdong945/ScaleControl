@@ -22,13 +22,28 @@ namespace ScaleControl.Data
             using (var conn = _factory.CreateConnection())
             {
                 conn.Open();
-                foreach (var batch in sql.Split(new[] { "GO" }, StringSplitOptions.RemoveEmptyEntries))
+                // 按分号分割SQL语句（每句CREATE TABLE以分号结尾）
+                var statements = sql.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (var statement in statements)
                 {
-                    if (string.IsNullOrWhiteSpace(batch)) continue;
-                    using (var cmd = conn.CreateCommand())
+                    string trimmed = statement.Trim();
+                    if (string.IsNullOrWhiteSpace(trimmed)) continue;
+                    try
                     {
-                        cmd.CommandText = batch.Trim();
-                        cmd.ExecuteNonQuery();
+                        using (var cmd = conn.CreateCommand())
+                        {
+                            cmd.CommandText = trimmed;
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        // 忽略"表已存在"错误，其他错误抛出
+                        string msg = ex.Message.ToLower();
+                        if (!msg.Contains("already exists") && !msg.Contains("已存在"))
+                        {
+                            throw;
+                        }
                     }
                 }
             }

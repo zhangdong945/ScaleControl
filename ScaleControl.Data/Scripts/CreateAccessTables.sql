@@ -4,21 +4,21 @@
 
 CREATE TABLE Trade (
     Id AUTOINCREMENT PRIMARY KEY,
-    TicketNo1 VARCHAR(50),
-    TicketNo2 VARCHAR(50),
-    Station1 VARCHAR(50),
-    Station2 VARCHAR(50),
-    ScaleNo1 VARCHAR(50),
-    ScaleNo2 VARCHAR(50),
-    TruckNo VARCHAR(50),
-    CardNo VARCHAR(50),
-    ContractNo VARCHAR(50),
-    Product VARCHAR(100),
-    ProductCode VARCHAR(50),
-    Specification VARCHAR(100),
-    Sender VARCHAR(100),
-    Receiver VARCHAR(100),
-    Transporter VARCHAR(100),
+    TicketNo1 TEXT(50),
+    TicketNo2 TEXT(50),
+    Station1 TEXT(50),
+    Station2 TEXT(50),
+    ScaleNo1 TEXT(50),
+    ScaleNo2 TEXT(50),
+    TruckNo TEXT(50),
+    CardNo TEXT(50),
+    ContractNo TEXT(50),
+    Product TEXT(100),
+    ProductCode TEXT(50),
+    Specification TEXT(100),
+    Sender TEXT(100),
+    Receiver TEXT(100),
+    Transporter TEXT(100),
     FirstDateTime DATETIME,
     SecondDateTime DATETIME,
     GrossDateTime DATETIME,
@@ -31,51 +31,51 @@ CREATE TABLE Trade (
     ProductNet CURRENCY,
     ExceptWater CURRENCY,
     ExceptOther CURRENCY,
-    UserId1 VARCHAR(50),
-    UserName1 VARCHAR(50),
-    UserId2 VARCHAR(50),
-    UserName2 VARCHAR(50),
-    Bc1 VARCHAR(50),
-    Bc2 VARCHAR(50),
-    ScaleWeightFlag VARCHAR(10),
-    SpareFlag VARCHAR(10),
-    UploadFlag VARCHAR(10) DEFAULT '0',
-    DataEditFlag VARCHAR(10) DEFAULT '0',
-    DataStatus VARCHAR(10) DEFAULT '1',
-    ManualInputFlag VARCHAR(10) DEFAULT '0',
-    ScaleMode VARCHAR(20),
-    FinalFlag VARCHAR(10) DEFAULT '0',
+    UserId1 TEXT(50),
+    UserName1 TEXT(50),
+    UserId2 TEXT(50),
+    UserName2 TEXT(50),
+    Bc1 TEXT(50),
+    Bc2 TEXT(50),
+    ScaleWeightFlag TEXT(10),
+    SpareFlag TEXT(10),
+    UploadFlag TEXT(10) DEFAULT '0',
+    DataEditFlag TEXT(10) DEFAULT '0',
+    DataStatus TEXT(10) DEFAULT '1',
+    ManualInputFlag TEXT(10) DEFAULT '0',
+    ScaleMode TEXT(20),
+    FinalFlag TEXT(10) DEFAULT '0',
     LeftWeight LONG,
-    TareWeightAlarmFlag VARCHAR(10) DEFAULT '0',
-    TareTimeAlarmFlag VARCHAR(10) DEFAULT '0',
-    WeightTimeAlarmFlag VARCHAR(10) DEFAULT '0',
-    AutoSaveFlag VARCHAR(10) DEFAULT '0',
-    AuthFlag VARCHAR(10) DEFAULT '0',
-    Driver VARCHAR(50),
-    BusinessNo VARCHAR(50),
-    IdNumber VARCHAR(50),
-    BusinessType VARCHAR(50),
+    TareWeightAlarmFlag TEXT(10) DEFAULT '0',
+    TareTimeAlarmFlag TEXT(10) DEFAULT '0',
+    WeightTimeAlarmFlag TEXT(10) DEFAULT '0',
+    AutoSaveFlag TEXT(10) DEFAULT '0',
+    AuthFlag TEXT(10) DEFAULT '0',
+    Driver TEXT(50),
+    BusinessNo TEXT(50),
+    IdNumber TEXT(50),
+    BusinessType TEXT(50),
     MaxGross LONG,
     MaxNet LONG,
-    OwsCheckType VARCHAR(20),
+    OwsCheckType TEXT(20),
     ReprintCount LONG DEFAULT 0,
-    IdentifyTruckNo1 VARCHAR(50),
-    IdentifyTruckNo2 VARCHAR(50),
-    SpareStr1 VARCHAR(255),
-    SpareStr2 VARCHAR(255),
-    SpareStr3 VARCHAR(255),
-    SpareStr4 VARCHAR(255),
-    SpareStr5 VARCHAR(255),
-    SpareStr6 VARCHAR(255),
-    SpareStr7 VARCHAR(255),
-    SpareStr8 VARCHAR(255),
-    SpareStr9 VARCHAR(255),
-    SpareStr10 VARCHAR(255),
-    SpareStr11 VARCHAR(255),
-    SpareStr12 VARCHAR(255),
-    SpareStr13 VARCHAR(255),
-    SpareStr14 VARCHAR(255),
-    SpareStr15 VARCHAR(255),
+    IdentifyTruckNo1 TEXT(50),
+    IdentifyTruckNo2 TEXT(50),
+    SpareStr1 TEXT(255),
+    SpareStr2 TEXT(255),
+    SpareStr3 TEXT(255),
+    SpareStr4 TEXT(255),
+    SpareStr5 TEXT(255),
+    SpareStr6 TEXT(255),
+    SpareStr7 TEXT(255),
+    SpareStr8 TEXT(255),
+    SpareStr9 TEXT(255),
+    SpareStr10 TEXT(255),
+    SpareStr11 TEXT(255),
+    SpareStr12 TEXT(255),
+    SpareStr13 TEXT(255),
+    SpareStr14 TEXT(255),
+    SpareStr15 TEXT(255),
     SpareNum1 CURRENCY,
     SpareNum2 CURRENCY,
     SpareNum3 CURRENCY,
@@ -85,276 +85,246 @@ CREATE TABLE Trade (
     SpareNum7 CURRENCY,
     SpareNum8 CURRENCY
 );
-GO
 
 CREATE TABLE TruckList (
-    TruckNo VARCHAR(50) PRIMARY KEY,
+    TruckNo TEXT(50) PRIMARY KEY,
     Tare LONG DEFAULT 0,
     TareDate DATETIME,
-    InputCode VARCHAR(50),
+    InputCode TEXT(50),
     EffectDay LONG DEFAULT 0,
-    Remark VARCHAR(255),
+    Remark TEXT(255),
     MaxGross LONG,
     MaxNet LONG,
-    OwsCheckType VARCHAR(20)
+    OwsCheckType TEXT(20)
 );
-GO
 
 CREATE TABLE ProductList (
     Id AUTOINCREMENT PRIMARY KEY,
-    ProductName VARCHAR(100),
-    Code VARCHAR(50),
-    InputCode VARCHAR(50),
-    Remark VARCHAR(255),
-    EnableMaxNetLimit YESNO DEFAULT FALSE,
+    ProductName TEXT(100),
+    Code TEXT(50),
+    InputCode TEXT(50),
+    Remark TEXT(255),
+    EnableMaxNetLimit BIT DEFAULT 0,
     MaxNetLimit LONG DEFAULT 0
 );
-GO
 
 CREATE TABLE SenderList (
     Id AUTOINCREMENT PRIMARY KEY,
-    Name VARCHAR(100),
-    InputCode VARCHAR(50),
-    Remark VARCHAR(255)
+    Name TEXT(100),
+    InputCode TEXT(50),
+    Remark TEXT(255)
 );
-GO
 
 CREATE TABLE ReceiverList (
     Id AUTOINCREMENT PRIMARY KEY,
-    Name VARCHAR(100),
-    InputCode VARCHAR(50),
-    Remark VARCHAR(255)
+    Name TEXT(100),
+    InputCode TEXT(50),
+    Remark TEXT(255)
 );
-GO
 
 CREATE TABLE TransporterList (
     Id AUTOINCREMENT PRIMARY KEY,
-    Name VARCHAR(100),
-    InputCode VARCHAR(50),
-    Remark VARCHAR(255)
+    Name TEXT(100),
+    InputCode TEXT(50),
+    Remark TEXT(255)
 );
-GO
 
 CREATE TABLE CardInfo (
     Id AUTOINCREMENT PRIMARY KEY,
-    CardNo VARCHAR(50),
-    TruckNo VARCHAR(50),
-    Remark VARCHAR(255)
+    CardNo TEXT(50),
+    TruckNo TEXT(50),
+    Remark TEXT(255)
 );
-GO
 
 CREATE TABLE Contractlist (
     Id AUTOINCREMENT PRIMARY KEY,
-    ContractNo VARCHAR(50),
-    Sender VARCHAR(100),
-    Receiver VARCHAR(100),
-    Product VARCHAR(100),
+    ContractNo TEXT(50),
+    Sender TEXT(100),
+    Receiver TEXT(100),
+    Product TEXT(100),
     ContractAmount CURRENCY,
-    Remark VARCHAR(255)
+    Remark TEXT(255)
 );
-GO
 
 CREATE TABLE UserList (
     Id AUTOINCREMENT PRIMARY KEY,
-    UserId VARCHAR(50),
-    LogName VARCHAR(50),
-    UserName VARCHAR(50),
-    GroupName VARCHAR(50),
-    Password VARCHAR(100),
-    Remark VARCHAR(255)
+    UserId TEXT(50),
+    LogName TEXT(50),
+    UserName TEXT(50),
+    GroupName TEXT(50),
+    Password TEXT(100),
+    Remark TEXT(255)
 );
-GO
 
 CREATE TABLE UserGroup (
     GroupId AUTOINCREMENT PRIMARY KEY,
-    GroupName VARCHAR(50),
-    Remark VARCHAR(255)
+    GroupName TEXT(50),
+    Remark TEXT(255)
 );
-GO
 
 CREATE TABLE UserRoleCtrl (
     Id AUTOINCREMENT PRIMARY KEY,
     GroupId LONG,
     ModelId LONG,
-    ModelChnName VARCHAR(100),
-    Search YESNO DEFAULT FALSE,
-    Edit YESNO DEFAULT FALSE,
-    Other1 YESNO DEFAULT FALSE,
-    Other2 YESNO DEFAULT FALSE
+    ModelChnName TEXT(100),
+    Search BIT DEFAULT 0,
+    Edit BIT DEFAULT 0,
+    Other1 BIT DEFAULT 0,
+    Other2 BIT DEFAULT 0
 );
-GO
 
 CREATE TABLE StationList (
     Id AUTOINCREMENT PRIMARY KEY,
-    StationNo VARCHAR(50),
-    StationName VARCHAR(100),
-    Remark VARCHAR(255)
+    StationNo TEXT(50),
+    StationName TEXT(100),
+    Remark TEXT(255)
 );
-GO
 
 CREATE TABLE LogInfo (
     LogId AUTOINCREMENT PRIMARY KEY,
-    KeyValue VARCHAR(255),
-    Operator VARCHAR(50),
+    KeyValue TEXT(255),
+    Operator TEXT(50),
     LogTime DATETIME,
-    OptType VARCHAR(50),
-    ModuleId VARCHAR(50),
-    ModuleName VARCHAR(100),
+    OptType TEXT(50),
+    ModuleId TEXT(50),
+    ModuleName TEXT(100),
     LogBeforeData MEMO,
     LogAfterData MEMO,
-    Reason VARCHAR(255)
+    Reason TEXT(255)
 );
-GO
 
 CREATE TABLE SysMenuClassList (
     ClassId AUTOINCREMENT PRIMARY KEY,
-    ChnText VARCHAR(100),
-    EngText VARCHAR(100),
+    ChnText TEXT(100),
+    EngText TEXT(100),
     OrderNum LONG DEFAULT 0
 );
-GO
 
 CREATE TABLE SysMenuList (
     MenuId AUTOINCREMENT PRIMARY KEY,
     ClassId LONG,
-    ChnText VARCHAR(100),
-    EngText VARCHAR(100),
+    ChnText TEXT(100),
+    EngText TEXT(100),
     ImageIndex LONG DEFAULT 0,
     OrderNum LONG DEFAULT 0,
-    CanUseFlag YESNO DEFAULT TRUE,
-    OperatorText VARCHAR(255)
+    CanUseFlag BIT DEFAULT -1,
+    OperatorText TEXT(255)
 );
-GO
 
 CREATE TABLE Report (
     ReportId AUTOINCREMENT PRIMARY KEY,
-    ReportName VARCHAR(100),
-    ReportCHNName VARCHAR(100),
+    ReportName TEXT(100),
+    ReportCHNName TEXT(100),
     ReportSQL MEMO,
-    ReportType VARCHAR(50),
-    Root VARCHAR(255)
+    ReportType TEXT(50),
+    Root TEXT(255)
 );
-GO
 
 CREATE TABLE TFieldNameList (
     Id AUTOINCREMENT PRIMARY KEY,
-    FieldName VARCHAR(50),
-    ChnName VARCHAR(100),
-    EngName VARCHAR(100)
+    FieldName TEXT(50),
+    ChnName TEXT(100),
+    EngName TEXT(100)
 );
-GO
 
 CREATE TABLE MainPosition (
     Id AUTOINCREMENT PRIMARY KEY,
-    ScaleMode VARCHAR(20),
-    FieldName VARCHAR(50),
-    CtrlName VARCHAR(100),
+    ScaleMode TEXT(20),
+    FieldName TEXT(50),
+    CtrlName TEXT(100),
     Top LONG DEFAULT 0,
     Left LONG DEFAULT 0,
     Height LONG DEFAULT 0,
     Width LONG DEFAULT 0,
-    FontName VARCHAR(50),
-    FontSize SINGLE DEFAULT 0,
-    FontItalic YESNO DEFAULT FALSE,
-    FontBold YESNO DEFAULT FALSE,
-    BackColor VARCHAR(50),
-    ForeColor VARCHAR(50),
-    LabelCaption VARCHAR(100),
+    FontName TEXT(50),
+    FontSize REAL DEFAULT 0,
+    FontItalic BIT DEFAULT 0,
+    FontBold BIT DEFAULT 0,
+    BackColor TEXT(50),
+    ForeColor TEXT(50),
+    LabelCaption TEXT(100),
     TabOrder LONG DEFAULT 0,
-    IsVisible YESNO DEFAULT TRUE,
-    IsReadOnly YESNO DEFAULT FALSE,
-    IsClear YESNO DEFAULT FALSE,
-    IsMustFill YESNO DEFAULT FALSE,
-    IsMustExist YESNO DEFAULT FALSE,
-    Formula VARCHAR(255)
+    IsVisible BIT DEFAULT -1,
+    IsReadOnly BIT DEFAULT 0,
+    IsClear BIT DEFAULT 0,
+    IsMustFill BIT DEFAULT 0,
+    IsMustExist BIT DEFAULT 0,
+    Formula TEXT(255)
 );
-GO
 
 CREATE TABLE SpareStr1 (
     Id AUTOINCREMENT PRIMARY KEY,
-    KeyField VARCHAR(255),
-    ValueField VARCHAR(255)
+    KeyField TEXT(255),
+    ValueField TEXT(255)
 );
-GO
 
 CREATE TABLE SpareStr2 (
     Id AUTOINCREMENT PRIMARY KEY,
-    KeyField VARCHAR(255),
-    ValueField VARCHAR(255)
+    KeyField TEXT(255),
+    ValueField TEXT(255)
 );
-GO
 
 CREATE TABLE SpareStr3 (
     Id AUTOINCREMENT PRIMARY KEY,
-    KeyField VARCHAR(255),
-    ValueField VARCHAR(255)
+    KeyField TEXT(255),
+    ValueField TEXT(255)
 );
-GO
 
 CREATE TABLE SpareStr4 (
     Id AUTOINCREMENT PRIMARY KEY,
-    KeyField VARCHAR(255),
-    ValueField VARCHAR(255)
+    KeyField TEXT(255),
+    ValueField TEXT(255)
 );
-GO
 
 CREATE TABLE SpareStr5 (
     Id AUTOINCREMENT PRIMARY KEY,
-    KeyField VARCHAR(255),
-    ValueField VARCHAR(255)
+    KeyField TEXT(255),
+    ValueField TEXT(255)
 );
-GO
 
 CREATE TABLE SpareStr6 (
     Id AUTOINCREMENT PRIMARY KEY,
-    KeyField VARCHAR(255),
-    ValueField VARCHAR(255)
+    KeyField TEXT(255),
+    ValueField TEXT(255)
 );
-GO
 
 CREATE TABLE SpareStr7 (
     Id AUTOINCREMENT PRIMARY KEY,
-    KeyField VARCHAR(255),
-    ValueField VARCHAR(255)
+    KeyField TEXT(255),
+    ValueField TEXT(255)
 );
-GO
 
 CREATE TABLE SpareStr8 (
     Id AUTOINCREMENT PRIMARY KEY,
-    KeyField VARCHAR(255),
-    ValueField VARCHAR(255)
+    KeyField TEXT(255),
+    ValueField TEXT(255)
 );
-GO
 
 CREATE TABLE SpecifList (
     Id AUTOINCREMENT PRIMARY KEY,
-    SpecifName VARCHAR(100),
-    Remark VARCHAR(255)
+    SpecifName TEXT(100),
+    Remark TEXT(255)
 );
-GO
 
 CREATE TABLE PictureList (
     Id AUTOINCREMENT PRIMARY KEY,
-    PictureName VARCHAR(100),
-    PictureData OLEOBJECT,
+    PictureName TEXT(100),
+    PictureData LONGBINARY,
     RecordId LONG,
-    Remark VARCHAR(255)
+    Remark TEXT(255)
 );
-GO
 
 CREATE TABLE TrendLineList (
     Id AUTOINCREMENT PRIMARY KEY,
     RecordId LONG,
     WeightData DATETIME,
     WeightValue LONG,
-    StableFlag YESNO DEFAULT FALSE
+    StableFlag BIT DEFAULT 0
 );
-GO
 
 CREATE TABLE KeyList (
     Id AUTOINCREMENT PRIMARY KEY,
-    KeyName VARCHAR(50),
-    KeyValue VARCHAR(255),
-    Remark VARCHAR(255)
+    KeyName TEXT(50),
+    KeyValue TEXT(255),
+    Remark TEXT(255)
 );
-GO
