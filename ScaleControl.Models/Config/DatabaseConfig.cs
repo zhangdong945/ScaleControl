@@ -5,6 +5,12 @@ namespace ScaleControl.Models.Config
     [XmlRoot("DatabaseSettings")]
     public class DatabaseConfig
     {
+        [XmlElement("EnableLocalDb")]
+        public bool EnableLocalDb { get; set; } = true;
+
+        [XmlElement("EnableSqlServer")]
+        public bool EnableSqlServer { get; set; } = false;
+
         [XmlElement("Provider")]
         public string Provider { get; set; } = "Access";  // Access / SqlServer
 

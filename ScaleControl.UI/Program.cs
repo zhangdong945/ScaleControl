@@ -46,6 +46,17 @@ namespace ScaleControl.UI
             // 加载数据库配置
             var dbConfig = DatabaseConfigLoader.Load(configPath);
 
+            // 根据启用标志确定连接哪个数据库
+            bool useLocalDb = dbConfig.EnableLocalDb && !dbConfig.EnableSqlServer;
+            bool useSqlServer = dbConfig.EnableSqlServer && !dbConfig.EnableLocalDb;
+
+            // 如果两个都启用或都没启用，默认使用本地数据库
+            if (useLocalDb == useSqlServer)
+            {
+                useLocalDb = true;
+                useSqlServer = false;
+            }
+
             // 将相对路径转换为绝对路径（基于应用程序目录）
             if (!System.IO.Path.IsPathRooted(dbConfig.AccessDatabasePath))
             {
@@ -53,9 +64,15 @@ namespace ScaleControl.UI
             }
 
             // 初始化数据库连接
-            IDatabaseConnectionFactory connFactory = dbConfig.Provider == "Access"
-                ? new AccessConnectionFactory(dbConfig)
-                : (IDatabaseConnectionFactory)new SqlConnectionFactory(dbConfig);
+            IDatabaseConnectionFactory connFactory;
+            if (useSqlServer)
+            {
+                connFactory = new SqlConnectionFactory(dbConfig);
+            }
+            else
+            {
+                connFactory = new AccessConnectionFactory(dbConfig);
+            }
 
             var dbInit = new DatabaseInitializer(connFactory);
             if (!dbInit.TestConnection())
@@ -65,7 +82,7 @@ namespace ScaleControl.UI
                 return;
             }
 
-            if (dbConfig.Provider == "SqlServer")
+            if (useSqlServer)
             {
                 dbInit.CreateSqlServerDatabase(dbConfig.SqlServerHost, dbConfig.SqlDatabase, dbConfig.SqlUser, dbConfig.SqlPassword);
             }

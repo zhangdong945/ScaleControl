@@ -50,8 +50,12 @@ namespace ScaleControl.UI.Forms
                 txtSqlUser.Text = _config.SqlUser;
                 txtSqlPassword.Text = _config.SqlPassword;
 
-                // Select tab based on provider
-                if (_config.Provider == "SqlServer")
+                // 设置启用状态
+                chkEnableLocal.Checked = _config.EnableLocalDb;
+                chkEnableNetwork.Checked = _config.EnableSqlServer;
+
+                // Select tab based on enabled provider
+                if (_config.EnableSqlServer && !_config.EnableLocalDb)
                 {
                     tabControl.SelectedTab = tabNetwork;
                 }
@@ -281,6 +285,32 @@ namespace ScaleControl.UI.Forms
             }
         }
 
+        private void chkEnableLocal_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkEnableLocal.Checked)
+            {
+                chkEnableNetwork.Checked = false;
+            }
+            else if (!chkEnableNetwork.Checked)
+            {
+                // 至少启用一个
+                chkEnableNetwork.Checked = true;
+            }
+        }
+
+        private void chkEnableNetwork_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkEnableNetwork.Checked)
+            {
+                chkEnableLocal.Checked = false;
+            }
+            else if (!chkEnableLocal.Checked)
+            {
+                // 至少启用一个
+                chkEnableLocal.Checked = true;
+            }
+        }
+
         private DatabaseConfig GetConfigFromFields()
         {
             string dbPath = txtAccessPath.Text.Trim();
@@ -292,7 +322,9 @@ namespace ScaleControl.UI.Forms
 
             return new DatabaseConfig
             {
-                Provider = tabControl.SelectedTab == tabNetwork ? "SqlServer" : "Access",
+                EnableLocalDb = chkEnableLocal.Checked,
+                EnableSqlServer = chkEnableNetwork.Checked,
+                Provider = chkEnableNetwork.Checked ? "SqlServer" : "Access",
                 AccessDatabasePath = dbPath,
                 AccessPassword = txtAccessPassword.Text,
                 SqlServerHost = txtSqlHost.Text.Trim(),

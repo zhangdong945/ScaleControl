@@ -53,6 +53,7 @@ namespace ScaleControl.UI.Forms
             // 
             // tabLocal
             // 
+            this.tabLocal.Controls.Add(this.chkEnableLocal);
             this.tabLocal.Controls.Add(this.lblAccessPath);
             this.tabLocal.Controls.Add(this.txtAccessPath);
             this.tabLocal.Controls.Add(this.btnBrowse);
@@ -126,9 +127,24 @@ namespace ScaleControl.UI.Forms
             this.btnCreateDb.Text = "创建数据库";
             this.btnCreateDb.UseVisualStyleBackColor = true;
             this.btnCreateDb.Click += new System.EventHandler(this.btnCreateDb_Click);
+            //
+            // chkEnableLocal
+            //
+            this.chkEnableLocal.AutoSize = true;
+            this.chkEnableLocal.Checked = true;
+            this.chkEnableLocal.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkEnableLocal.Location = new System.Drawing.Point(44, 18);
+            this.chkEnableLocal.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.chkEnableLocal.Name = "chkEnableLocal";
+            this.chkEnableLocal.Size = new System.Drawing.Size(190, 28);
+            this.chkEnableLocal.TabIndex = 6;
+            this.chkEnableLocal.Text = "启用本地数据库";
+            this.chkEnableLocal.UseVisualStyleBackColor = true;
+            this.chkEnableLocal.CheckedChanged += new System.EventHandler(this.chkEnableLocal_CheckedChanged);
             // 
             // tabNetwork
             // 
+            this.tabNetwork.Controls.Add(this.chkEnableNetwork);
             this.tabNetwork.Controls.Add(this.lblSqlHost);
             this.tabNetwork.Controls.Add(this.txtSqlHost);
             this.tabNetwork.Controls.Add(this.lblSqlDatabase);
@@ -231,6 +247,18 @@ namespace ScaleControl.UI.Forms
             this.btnCreateSqlDb.UseVisualStyleBackColor = true;
             this.btnCreateSqlDb.Click += new System.EventHandler(this.btnCreateSqlDb_Click);
             //
+            // chkEnableNetwork
+            //
+            this.chkEnableNetwork.AutoSize = true;
+            this.chkEnableNetwork.Location = new System.Drawing.Point(44, 18);
+            this.chkEnableNetwork.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.chkEnableNetwork.Name = "chkEnableNetwork";
+            this.chkEnableNetwork.Size = new System.Drawing.Size(214, 28);
+            this.chkEnableNetwork.TabIndex = 9;
+            this.chkEnableNetwork.Text = "启用网络数据库";
+            this.chkEnableNetwork.UseVisualStyleBackColor = true;
+            this.chkEnableNetwork.CheckedChanged += new System.EventHandler(this.chkEnableNetwork_CheckedChanged);
+            //
             // btnTest
             // 
             this.btnTest.Location = new System.Drawing.Point(200, 590);
@@ -307,6 +335,8 @@ namespace ScaleControl.UI.Forms
         private System.Windows.Forms.Label lblSqlPassword;
         private System.Windows.Forms.TextBox txtSqlPassword;
         private System.Windows.Forms.Button btnCreateSqlDb;
+        private System.Windows.Forms.CheckBox chkEnableLocal;
+        private System.Windows.Forms.CheckBox chkEnableNetwork;
         private System.Windows.Forms.Button btnTest;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnCancel;
