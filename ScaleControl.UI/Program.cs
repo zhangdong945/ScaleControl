@@ -65,9 +65,6 @@ namespace ScaleControl.UI
                 return;
             }
 
-            // 初始化数据库表（如果不存在）
-            dbInit.Initialize();
-
             // 创建仓储
             var repository = new WeighingRepository(connFactory);
 

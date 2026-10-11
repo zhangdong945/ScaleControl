@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DatabaseSettings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Provider>Access</Provider>
+  <AccessDatabasePath>database\sc.mdb</AccessDatabasePath>
+  <AccessPassword>sss2014aw</AccessPassword>
+  <SqlServerHost />
+  <SqlDatabase />
+  <SqlUser />
+  <SqlPassword />
+</DatabaseSettings>

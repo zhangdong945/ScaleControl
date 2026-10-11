@@ -146,8 +146,7 @@ namespace ScaleControl.UI.Forms
                         }
                         CreateAccessDatabase(dbPath, _config.AccessPassword);
                     }
-                    // 创建数据表（新数据库必须创建，已有数据库跳过已存在的表）
-                    CreateDatabaseTables();
+                    // 模板数据库已包含所有表结构，无需额外创建
                 }
 
                 DatabaseConfigLoader.Save(_config, _configPath);
@@ -161,51 +160,15 @@ namespace ScaleControl.UI.Forms
         }
 
         /// <summary>
-        /// 创建数据库表（如果不存在）
-        /// </summary>
-        private void CreateDatabaseTables()
-        {
-            try
-            {
-                var factory = new AccessConnectionFactory(_config);
-                var initializer = new DatabaseInitializer(factory);
-                initializer.Initialize();
-            }
-            catch (Exception ex)
-            {
-                throw new System.InvalidOperationException($"创建数据表失败: {ex.Message}", ex);
-            }
-        }
-
-        /// <summary>
         /// 创建Access数据库文件（从模板复制）
         /// </summary>
         private void CreateAccessDatabase(string dbPath, string password)
         {
             try
             {
-                // 从嵌入资源中复制空白数据库模板
-                var assembly = System.Reflection.Assembly.GetExecutingAssembly();
-                string templateName = null;
-                foreach (var name in assembly.GetManifestResourceNames())
-                {
-                    if (name.EndsWith("EmptyDatabase.mdb"))
-                    {
-                        templateName = name;
-                        break;
-                    }
-                }
-                if (templateName == null)
-                {
-                    throw new System.InvalidOperationException("找不到数据库模板文件。");
-                }
-                using (var stream = assembly.GetManifestResourceStream(templateName))
-                {
-                    using (var fileStream = new System.IO.FileStream(dbPath, System.IO.FileMode.Create))
-                    {
-                        stream.CopyTo(fileStream);
-                    }
-                }
+                var factory = new AccessConnectionFactory(_config);
+                var initializer = new DatabaseInitializer(factory);
+                initializer.CreateFromTemplate(dbPath);
             }
             catch (System.Exception ex)
             {
@@ -270,16 +233,6 @@ namespace ScaleControl.UI.Forms
                 }
 
                 CreateAccessDatabase(dbPath, password);
-
-                var tempConfig = new DatabaseConfig
-                {
-                    Provider = "Access",
-                    AccessDatabasePath = dbPath,
-                    AccessPassword = password
-                };
-                var factory = new AccessConnectionFactory(tempConfig);
-                var initializer = new DatabaseInitializer(factory);
-                initializer.Initialize();
 
                 txtAccessPath.Text = dbPath;
                 txtAccessPassword.Text = password;
