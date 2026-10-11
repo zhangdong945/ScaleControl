@@ -106,11 +106,12 @@ namespace ScaleControl.UI.Forms
                     System.IO.Directory.CreateDirectory(configDir);
                 }
 
-                // 如果使用Access且数据库文件不存在，自动创建
+                // 如果使用Access且数据库文件不存在，自动创建数据库和表
                 if (_config.Provider == "Access")
                 {
                     string dbPath = _config.AccessDatabasePath;
-                    if (!System.IO.File.Exists(dbPath))
+                    bool isNewDb = !System.IO.File.Exists(dbPath);
+                    if (isNewDb)
                     {
                         string dbDir = System.IO.Path.GetDirectoryName(dbPath);
                         if (!string.IsNullOrEmpty(dbDir) && !System.IO.Directory.Exists(dbDir))
@@ -119,6 +120,8 @@ namespace ScaleControl.UI.Forms
                         }
                         CreateAccessDatabase(dbPath, _config.AccessPassword);
                     }
+                    // 创建数据表（新数据库必须创建，已有数据库跳过已存在的表）
+                    CreateDatabaseTables();
                 }
 
                 DatabaseConfigLoader.Save(_config, _configPath);
@@ -128,6 +131,23 @@ namespace ScaleControl.UI.Forms
             catch (Exception ex)
             {
                 MessageBox.Show("保存失败: " + ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// 创建数据库表（如果不存在）
+        /// </summary>
+        private void CreateDatabaseTables()
+        {
+            try
+            {
+                var factory = new AccessConnectionFactory(_config);
+                var initializer = new DatabaseInitializer(factory);
+                initializer.Initialize();
+            }
+            catch (Exception ex)
+            {
+                throw new System.InvalidOperationException($"创建数据表失败: {ex.Message}", ex);
             }
         }
 
