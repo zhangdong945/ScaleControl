@@ -2,6 +2,7 @@ using System;
 using System.Windows.Forms;
 using ScaleControl.Data;
 using ScaleControl.Models.Config;
+using ScaleControl.Common;
 
 namespace ScaleControl.UI.Forms
 {
@@ -10,7 +11,7 @@ namespace ScaleControl.UI.Forms
         private DatabaseConfig _config;
         private readonly string _configPath;
         private readonly string _appDir;
-        private readonly string _access_db_filename = "sc.mdb";
+        private readonly string _access_db_filename = Common.Defaults._default_local_database_filename;
 
         public frmDatabaseConfig(string configPath, string appDir)
         {
@@ -214,13 +215,13 @@ namespace ScaleControl.UI.Forms
         {
             try
             {
-                string dbDir = System.IO.Path.Combine(_appDir, "database");
+                string dbDir = System.IO.Path.Combine(_appDir, Common.Defaults._default_database_folder);
                 if (!System.IO.Directory.Exists(dbDir))
                 {
                     System.IO.Directory.CreateDirectory(dbDir);
                 }
 
-                string dbPath = System.IO.Path.Combine(dbDir, _access_db_filename);
+                string dbPath = System.IO.Path.Combine(dbDir, Common.Defaults._default_local_database_filename);
                 const string password = "sss2014aw";
 
                 if (System.IO.File.Exists(dbPath))
@@ -277,11 +278,58 @@ namespace ScaleControl.UI.Forms
                 var initializer = new DatabaseInitializer(testFactory);
                 initializer.CreateSqlServerDatabase(testConfig.SqlServerHost, testConfig.SqlDatabase, testConfig.SqlUser, testConfig.SqlPassword);
 
-                MessageBox.Show("SQL Server数据库创建成功！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                // 将本地Access数据库的参考表数据同步到新创建的SQL Server数据库
+                string syncMessage = SynchronizeLocalToSqlServer(testConfig);
+
+                MessageBox.Show("SQL Server数据库创建成功！" + syncMessage, "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (System.Exception ex)
             {
                 MessageBox.Show("创建数据库失败: " + ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// 将本地Access数据库的参考表数据同步到SQL Server数据库。
+        /// </summary>
+        private string SynchronizeLocalToSqlServer(DatabaseConfig testConfig)
+        {
+            try
+            {
+                // 确定本地Access数据库路径
+                string localDbPath = testConfig.AccessDatabasePath;
+                if (!System.IO.Path.IsPathRooted(localDbPath) && _appDir != null)
+                {
+                    localDbPath = System.IO.Path.Combine(_appDir, localDbPath);
+                }
+
+                if (!System.IO.File.Exists(localDbPath))
+                {
+                    return "\n\n（本地Access数据库不存在，跳过数据同步）";
+                }
+
+                var localConfig = new DatabaseConfig
+                {
+                    AccessDatabasePath = localDbPath,
+                    AccessPassword = testConfig.AccessPassword
+                };
+
+                string accessConnStr = localConfig.GetAccessConnectionString();
+                string sqlConnStr = testConfig.GetSqlServerConnectionString();
+
+                var synchronizer = new DatabaseSynchronizer(accessConnStr, sqlConnStr);
+                synchronizer.Synchronize();
+
+                string log = synchronizer.SyncLog;
+                if (string.IsNullOrEmpty(log))
+                {
+                    return "\n\n（本地数据库参考表为空，无需同步）";
+                }
+                return "\n\n数据同步结果：\n" + log;
+            }
+            catch (Exception ex)
+            {
+                return $"\n\n（数据同步失败: {ex.Message}）";
             }
         }
 

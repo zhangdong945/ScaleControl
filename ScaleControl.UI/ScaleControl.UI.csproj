@@ -175,6 +175,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ScaleControl.Common\ScaleControl.Common.csproj">
+      <Project>{fcb535a7-cdf3-4460-9d98-420ee40278d8}</Project>
+      <Name>ScaleControl.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ScaleControl.Models\ScaleControl.Models.csproj">
       <Project>{07B31384-1336-484E-8195-27A3815E8D33}</Project>
       <Name>ScaleControl.Models</Name>

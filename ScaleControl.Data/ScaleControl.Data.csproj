@@ -45,6 +45,7 @@
     <Compile Include="AccessConnectionFactory.cs" />
     <Compile Include="DatabaseConfigLoader.cs" />
     <Compile Include="DatabaseInitializer.cs" />
+    <Compile Include="DatabaseSynchronizer.cs" />
     <Compile Include="HardwareConfigLoader.cs" />
     <Compile Include="RepositoryBase.cs" />
     <Compile Include="SqlConnectionFactory.cs" />

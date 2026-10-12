@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScaleControl.Reports", "Sca
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScaleControl.UI", "ScaleControl.UI\ScaleControl.UI.csproj", "{0121C3C6-FB38-4D06-A2AE-848E18EBE7D5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScaleControl.Common", "ScaleControl.Common\ScaleControl.Common.csproj", "{FCB535A7-CDF3-4460-9D98-420EE40278D8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +46,10 @@ Global
 		{0121C3C6-FB38-4D06-A2AE-848E18EBE7D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0121C3C6-FB38-4D06-A2AE-848E18EBE7D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0121C3C6-FB38-4D06-A2AE-848E18EBE7D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FCB535A7-CDF3-4460-9D98-420EE40278D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FCB535A7-CDF3-4460-9D98-420EE40278D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FCB535A7-CDF3-4460-9D98-420EE40278D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FCB535A7-CDF3-4460-9D98-420EE40278D8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
